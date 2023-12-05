@@ -9,4 +9,5 @@ The `R` folder contains the scripts used to recreate the plots:
 - `remaking-plots.R` contains the code used to recreate figure 1.2, which shows savings by age group
 - `was_exploration.R` contains the code used to recreate figure 1.3, which shows how much debt different age groups have and the ratio of debt over income.
 > Note 1: the original figure 1.3 showed financial liabilities over income, but I was not able to recreate that from the raw data
+> 
 > Note 2: there is no reason for these scripts to be separate, it's just that @JolyonJoseph and @eirini-zormpa starting working on those problems in separate scripts. We should probably combine these before opening the repo :smile: :sparkles:
