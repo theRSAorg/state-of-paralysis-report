@@ -9,17 +9,20 @@ lapply(packages, library, character.only = TRUE)
 data_1820 <- readr::read_tsv("./data/was_round_7_hhold_eul_march_2022.tab") %>% 
   select(id = CASER7,
          age = HRPDVAge8r7,
-         credit_debt = totcsc_persr7_aggr) %>% 
+         credit_debt = totcsc_persr7_aggr,
+         debt_to_income_ratio = HHdebtIncRatr7) %>% 
   mutate(year = "2018-2020")
 
-# 2016-2018 data - (to merge credit debt by age group)
+# 2016-2018 data
 data_1618 <- readr::read_tsv("./data/was_round_6_hhold_eul_april_2022.tab") %>% 
   select(id = CASER6,
          age = HRPDVAge8R6,
-         credit_debt = totcsc_persr6_aggr) %>% 
+         credit_debt = totcsc_persr6_aggr,
+         debt_to_income_ratio = HHdebtIncRatr6) %>% 
   mutate(year = "2016-2018")
 
-credit_debt_data <- rbind(data_1820, data_1618) %>% 
+# combine the datasets from years 2016-2018 and 2018-2020
+data_1620 <- rbind(data_1820, data_1618) %>% 
   mutate(age = as_factor(age),
          age = fct_recode(age,
                           "16-25" = "2",
@@ -30,16 +33,8 @@ credit_debt_data <- rbind(data_1820, data_1618) %>%
                           "65-74" = "7",
                           "75+" = "8"))
 
-plot_data <- credit_debt_data %>%
-  group_by(age, year) %>%
-  summarise(mean_credit_debt = mean(credit_debt, na.rm = T)) %>%
-  ungroup() %>%
-  mutate(debt_change = lead(mean_credit_debt) - mean_credit_debt) %>%
-  filter(year == "2016-2018") %>%
-  drop_na(age)
-
 # bar plot for debt change
-debt_chage_barplot <- credit_debt_data %>%
+debt_chage_barplot <- data_1620 %>%
   group_by(age, year) %>%
   summarise(mean_credit_debt = mean(credit_debt, na.rm = T)) %>%
   ungroup() %>%
@@ -53,9 +48,8 @@ debt_chage_barplot <- credit_debt_data %>%
        y = "") +
   theme_classic()
 
-
 # connected dot plot for debt
-debt_connected_dotplot <- credit_debt_data %>%
+debt_connected_dotplot <- data_1620 %>%
   group_by(age, year) %>%
   summarise(mean_credit_debt = mean(credit_debt, na.rm = T)) %>%
   ungroup() %>%
@@ -71,7 +65,24 @@ debt_connected_dotplot <- credit_debt_data %>%
          y = "Mean credit card debt") +
     theme_classic()
 
-ggsave(here("figures", "1.3_barplot.png"), debt_chage_barplot)
-ggsave(here("figures", "1.3_dotplot.png"), debt_connected_dotplot)
+# ggsave(here("figures", "1.3_debt_barplot.png"), debt_chage_barplot)
+# ggsave(here("figures", "1.3_debt_dotplot.png"), debt_connected_dotplot)
 
+# bar plot for debt-to-income ratio
+debt_to_income_ratio_dotplot <- data_1620 %>%
+  group_by(age, year) %>%
+  summarise(mean_debt_to_income_ratio = mean(debt_to_income_ratio, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(mean_debt_to_income_ratio_2020 = lead(mean_debt_to_income_ratio)) %>%
+  filter(year == "2016-2018") %>%
+  drop_na(age) %>%
+  ggplot() +
+  geom_segment( aes(x=age, xend=age, y=mean_debt_to_income_ratio, yend=mean_debt_to_income_ratio_2020), color="grey") +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio), color="#000000", size=2 ) +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio_2020), color="#03ECDD", size=2 ) +
+  coord_flip() +
+  labs(x = "Age",
+       y = "Mean debt-to-income ratio") +
+  theme_classic()
 
+# ggsave(here("figures", "1.3_debt_income_ratio_dotplot.png"), debt_to_income_ratio_dotplot)
