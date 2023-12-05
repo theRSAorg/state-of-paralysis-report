@@ -8,23 +8,22 @@
 
 # install.packages("here")
 # install.packages("readr")
+# install.packages("janitor")
 # install.packages("tidyr")
 # install.packages("dplyr)
-# install.packages("magrittr")
-# install.packages("janitor")
+# install.packages("forcats")
 # install.packages("ggplot2")
 
 # for avoiding confusion with paths
 library(here)
-# for reading in all sorts of data files
+# for reading in all sorts of data files and cleaning their names
 library(readr)
+library(janitor)
 # for tidying data
 library(tidyr)
 library(dplyr)
-# for piping
-library(magrittr)
-# for cleaning names
-library(janitor)
+# for working with factors
+library(forcats)
 # for making pretty plots
 library(ggplot2)
 
@@ -32,39 +31,49 @@ library(ggplot2)
 rsa_palette <- c("#03ECDD",
                  "#000000",
                  "#FFFFFF",
-                 "#000C78",
                  "#FF21B8",
+                 "#000C78",
                  "#FFA72F",
                  "#FF2800")
 
 #### 2. read in and clean data ####
-was_data <- read_csv(here("data", "wealth-assets-survey-data.csv"))
+was_data <- read_delim(here("data", "was_round_7_hhold_eul_march_2022.tab"))
 
-# create a variable for age groups
-was_data <- was_data %>% 
-  pivot_longer(
-    cols = "16-24":"65+",
-    names_to = "age",
-    values_to = "values"
-  )
-
-# separate the variables out (total household debt etc.) and fill them in from the `values` column created above
-was_data <- was_data %>% 
-  pivot_wider(names_from = variable,
-              values_from = values)
-
-was_data %<>% clean_names()
+savings_data <- was_data %>% 
+  select(CASER7, age = HRPDVAge8r7, savings = DVSaValR7_aggr) %>% 
+  mutate(age = as_factor(age),
+         age = fct_recode(age,
+           "16-25" = "2",
+           "25-34" = "3",
+           "35-44" = "4",
+           "45-54" = "5",
+           "55-64" = "6",
+           "65-74" = "7",
+           "75+" = "8"
+         ))
 
 #### 3. plot data ####
-fig1_2 <- was_data %>% 
-  filter(round == "Round 7 (2018-2020)") %>% 
-  ggplot(aes(x = age, y = hhold_value_of_savings_accounts)) +
+# y-axis breaks every 5k
+fig1.2_a <- savings_data %>% 
+  group_by(age) %>%
+  summarise(mean_savings = mean(savings)) %>% 
+  ggplot(aes(x = age, y = mean_savings)) +
   geom_col(fill = "#000C78") +
   scale_y_continuous(n.breaks = 10) +
   labs(x = "Age",
        y = "") +
   theme_classic()
 
+# y-axis breaks every 2.5k
+fig1.2_b <- savings_data %>% 
+  group_by(age) %>%
+  summarise(mean_savings = mean(savings)) %>% 
+  ggplot(aes(x = age, y = mean_savings)) +
+  geom_col(fill = "#000C78") +
+  scale_y_continuous(n.breaks = 15) +
+  labs(x = "Age",
+       y = "") +
+  theme_classic()
 
-ggsave(here("figures", "figure1_2.png"), fig1_2)
-
+ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
+ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
