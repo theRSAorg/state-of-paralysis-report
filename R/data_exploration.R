@@ -11,8 +11,8 @@ lapply(packages, library, character.only = TRUE)
 rsa_palette <- c("#03ECDD",
                  "#000000",
                  "#FFFFFF",
-                 "#000C78",
                  "#FF21B8",
+                 "#000C78",
                  "#FFA72F",
                  "#FF2800")
 
@@ -21,7 +21,7 @@ rsa_extra_palette <- c("#F5F5F5",
                     "#21DCFF")
 
 data <- haven::read_sav("./data/househol.sav")
-
+  
 dplyr::glimpse(data)
 
 # Summarise tenure by age group
@@ -60,5 +60,6 @@ tenure_tab <- data %>%
 # plot
 ggplot2::ggplot(tenure_tab, aes(age, percentage, fill = tenure, group = tenure)) +
   geom_col(position = "dodge", colour = "black") +
+  theme_bw() +
   scale_fill_manual(values = rsa_palette)
 
