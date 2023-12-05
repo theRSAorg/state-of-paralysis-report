@@ -1,6 +1,6 @@
 rm(list = ls()) # clear the work space
 # Packages
-packages <- c('here', readr','dplyr','ggplot2','forcats', 'GGally')
+packages <- c('here', 'readr','dplyr','ggplot2','forcats', 'GGally')
 pkg_notinstall <- packages[!(packages %in% installed.packages()[,"Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
@@ -73,4 +73,5 @@ debt_connected_dotplot <- credit_debt_data %>%
 
 ggsave(here("figures", "1.3_barplot.png"), debt_chage_barplot)
 ggsave(here("figures", "1.3_dotplot.png"), debt_connected_dotplot)
+
 
