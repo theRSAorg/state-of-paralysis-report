@@ -25,7 +25,7 @@ data_1618 <- readr::read_tsv("./data/was_round_6_hhold_eul_april_2022.tab") %>%
 data_1620 <- rbind(data_1820, data_1618) %>% 
   mutate(age = as_factor(age),
          age = fct_recode(age,
-                          "16-25" = "2",
+                          "16-24" = "2",
                           "25-34" = "3",
                           "35-44" = "4",
                           "45-54" = "5",
