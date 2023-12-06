@@ -1,6 +1,6 @@
 rm(list = ls()) # clear the work space
 # Packages
-packages <- c('here', 'readr','dplyr','ggplot2','forcats', 'GGally')
+packages <- c('here', 'readr', 'tidyr', 'dplyr','ggplot2','forcats', 'GGally')
 pkg_notinstall <- packages[!(packages %in% installed.packages()[,"Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
@@ -74,12 +74,18 @@ debt_connected_dotplot <- data_1620 %>%
   drop_na(age) %>%
   ggplot() +
     geom_segment( aes(x=age, xend=age, y=mean_credit_debt, yend=mean_credit_debt_2020), color="grey") +
-    geom_point( aes(x=age, y=mean_credit_debt), color="#000000", size=2 ) +
-    geom_point( aes(x=age, y=mean_credit_debt_2020), color="#03ECDD", size=2 ) +
+    geom_point( aes(x=age, y=mean_credit_debt, color="2016-2018"), size=2 ) +
+    geom_point( aes(x=age, y=mean_credit_debt_2020, color="2018-2020"), size=2 ) +
+  scale_y_continuous(n.breaks = 8) +
     coord_flip() +
     labs(x = "Age",
          y = "Mean credit card debt") +
-    theme_classic()
+    theme_classic() +
+  scale_colour_manual(values = c("#000000", "#03ECDD"),
+                      guide = guide_legend(),
+                      name = "Year range") +
+  theme(legend.position = "bottom",
+        panel.border    = element_blank())
 
 # ggsave(here("figures", "1.3_debt_barplot.png"), debt_chage_barplot)
 # ggsave(here("figures", "1.3_debt_dotplot.png"), debt_connected_dotplot)
@@ -93,12 +99,18 @@ debt_to_income_ratio_dotplot <- data_1620 %>%
   filter(year == "2016-2018") %>%
   drop_na(age) %>%
   ggplot() +
-  geom_segment( aes(x=age, xend=age, y=mean_debt_to_income_ratio, yend=mean_debt_to_income_ratio_2020), color="grey") +
-  geom_point( aes(x=age, y=mean_debt_to_income_ratio), color="#000000", size=2 ) +
-  geom_point( aes(x=age, y=mean_debt_to_income_ratio_2020), color="#03ECDD", size=2 ) +
+  geom_segment( aes(x=age, xend=age, y=mean_debt_to_income_ratio, yend=mean_debt_to_income_ratio_2020), colour="grey") +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio, colour="2016-2018"), size=2 ) +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio_2020, colour="2018-2020"), size=2 ) +
+  scale_y_continuous(n.breaks = 8) +
   coord_flip() +
   labs(x = "Age",
        y = "Mean debt-to-income ratio") +
-  theme_classic()
+  theme_classic() +
+  scale_colour_manual(values = c("#000000", "#03ECDD"),
+                      guide = guide_legend(),
+                      name = "Year range") +
+  theme(legend.position = "bottom",
+        panel.border    = element_blank())
 
 # ggsave(here("figures", "1.3_debt_income_ratio_dotplot.png"), debt_to_income_ratio_dotplot)
