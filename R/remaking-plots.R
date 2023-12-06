@@ -43,7 +43,7 @@ savings_data <- was_data %>%
   select(CASER7, age = HRPDVAge8r7, savings = DVSaValR7_aggr) %>% 
   mutate(age = as_factor(age),
          age = fct_recode(age,
-           "16-25" = "2",
+           "16-24" = "2",
            "25-34" = "3",
            "35-44" = "4",
            "45-54" = "5",
@@ -75,5 +75,5 @@ fig1.2_b <- savings_data %>%
        y = "") +
   theme_classic()
 
-ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
-ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
+# ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
+# ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
