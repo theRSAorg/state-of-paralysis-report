@@ -65,4 +65,4 @@ ggplot2::ggplot(tenure_tab, aes(age, percentage, fill = tenure, group = tenure))
   scale_fill_manual(values = rsa_palette, name = "Tenure") +
   ylab("Percentage") + xlab("Age group") 
 
-ggsave(filename = "./figures/housing_tenure_2022.png")
+# ggsave(filename = "./figures/figure1_4_housing_tenure_2021-22.png")
