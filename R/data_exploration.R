@@ -10,14 +10,15 @@ lapply(packages, library, character.only = TRUE)
 
 rsa_palette <- c("#03ECDD",
                  "#000000",
-                 "#FFFFFF",
+                 
                  "#FF21B8",
                  "#000C78",
                  "#FFA72F",
                  "#FF2800")
 
 rsa_extra_palette <- c("#F5F5F5",
-                    "#373737",
+                       "#FFFFFF",
+                       "#373737",
                     "#21DCFF")
 
 data <- haven::read_sav("./data/househol.sav")
@@ -61,5 +62,7 @@ tenure_tab <- data %>%
 ggplot2::ggplot(tenure_tab, aes(age, percentage, fill = tenure, group = tenure)) +
   geom_col(position = "dodge", colour = "black") +
   theme_bw() +
-  scale_fill_manual(values = rsa_palette)
+  scale_fill_manual(values = rsa_palette, name = "Tenure") +
+  ylab("Percentage") + xlab("Age group") 
 
+ggsave(filename = "./figures/housing_tenure_2022.png")
