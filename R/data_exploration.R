@@ -127,10 +127,10 @@ tenure_data_factors <- tenure_data %>%
                                                  "Rented from Housing Association")),
          # match level order to original doc
          tenure = factor(tenure, 
-                         levels =  c("Mortgage",
-                                     "Own outright",
-                                     "Private rent",
-                                     "Social rent"))
+                         levels =  c("Private rent",
+                                     "Social rent",
+                                     "Mortgage",
+                                     "Own outright"))
          ) %>% 
   select(-filename)
 
