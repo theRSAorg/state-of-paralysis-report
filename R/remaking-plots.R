@@ -69,7 +69,8 @@ plot1.2_data <- savings_data %>%
   filter(age == "16-24") %>%
   mutate(
     saving_bins = case_when(
-      savings <= 500 ~ "<500",
+      savings == 0 ~ "0",
+      savings > 0 & savings <= 500 ~ "1-500",
       savings > 500 & savings <= 1000 ~ "501-1000",
       savings > 1000 & savings <= 1500 ~ "1001-1500",
       savings > 1500 & savings <= 2000 ~ "1501-2000",
@@ -92,7 +93,7 @@ fig1.2_b <- savings_data %>%
 
 # fig1.2_new
 plot.1.2_new <- plot1.2_data %>%
-  mutate(saving_bins = fct_relevel(saving_bins, "<500", "501-1000", "1001-1500", "1501-2000", ">2000")) %>% 
+  mutate(saving_bins = fct_relevel(saving_bins, "0", "1-500", "501-1000", "1001-1500", "1501-2000", ">2000")) %>% 
   ggplot(aes(x = saving_bins, y = percentage)) +
   geom_col(fill = "#000C78") +
   labs(x = "Savings",
