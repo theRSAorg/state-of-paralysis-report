@@ -52,18 +52,33 @@ savings_data <- was_data %>%
            "75+" = "8"
          ))
 
-#### 3. plot data ####
-# y-axis breaks every 5k
-fig1.2_a <- savings_data %>% 
+# explore savings by age group
+savings_data %>% 
   group_by(age) %>%
-  summarise(mean_savings = mean(savings)) %>% 
-  ggplot(aes(x = age, y = mean_savings)) +
-  geom_col(fill = "#000C78") +
-  scale_y_continuous(n.breaks = 10) +
-  labs(x = "Age",
-       y = "") +
-  theme_classic()
+  summarise(mean_savings = mean(savings),
+            median_savings = median(savings),
+            min_savings = min(savings),
+            max_savings = max(savings))
 
+savings_data %>% 
+  filter(age == "16-24") %>% 
+  summary()
+
+# create bins for savings amounts in the 16-24 group
+plot1.2_data <- savings_data %>%
+  filter(age == "16-24") %>%
+  mutate(
+    saving_bins = case_when(
+      savings <= 500 ~ "<500",
+      savings > 500 & savings <= 1000 ~ "501-1000",
+      savings > 1000 & savings <= 1500 ~ "1001-1500",
+      savings > 1500 & savings <= 2000 ~ "1501-2000",
+      savings > 2000 ~ ">2000")) %>% 
+  count(saving_bins) %>%
+  mutate(percentage = n/sum(n))
+
+#### 3. plot data ####
+# recreate original plot
 # y-axis breaks every 2.5k
 fig1.2_b <- savings_data %>% 
   group_by(age) %>%
@@ -75,5 +90,16 @@ fig1.2_b <- savings_data %>%
        y = "") +
   theme_classic()
 
+# fig1.2_new
+plot1.2_data %>%
+  mutate(saving_bins = fct_relevel(saving_bins, "<500", "501-1000", "1001-1500", "1501-2000", ">2000")) %>% 
+  ggplot(aes(x = saving_bins, y = percentage)) +
+  geom_col(fill = "#000C78") +
+  labs(x = "Median savings",
+       y = "%") +
+  theme_classic()
+  
+  
+  
 # ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
 # ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
