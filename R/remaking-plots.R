@@ -98,8 +98,8 @@ plot1.2_data_bin3000 <- savings_data %>%
 # y-axis breaks every 2.5k
 fig1.2_b <- savings_data %>% 
   group_by(age) %>%
-  summarise(mean_savings = mean(savings)) %>% 
-  ggplot(aes(x = age, y = mean_savings)) +
+  summarise(median_savings = median(savings)) %>% 
+  ggplot(aes(x = age, y = median_savings)) +
   geom_col(fill = "#000C78") +
   scale_y_continuous(n.breaks = 15) +
   labs(x = "Age",
@@ -127,4 +127,4 @@ plot.1.2_new_bin3000 <- plot1.2_data_bin3000 %>%
 # ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
 # ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
 # ggsave(here("figures", "figure1_2_new.png"), plot.1.2_new)
-# ggsave(here("figures", "figure1_2_new_bin3000.png"), plot.1.2_new_bin3000)
+# ggsave(here("figures", "figure1_2_new_bin3000.png"), plot.1.2_new_bin3000, width = 6)
