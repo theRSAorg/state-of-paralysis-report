@@ -91,11 +91,11 @@ fig1.2_b <- savings_data %>%
   theme_classic()
 
 # fig1.2_new
-plot1.2_data %>%
+plot.1.2_new <- plot1.2_data %>%
   mutate(saving_bins = fct_relevel(saving_bins, "<500", "501-1000", "1001-1500", "1501-2000", ">2000")) %>% 
   ggplot(aes(x = saving_bins, y = percentage)) +
   geom_col(fill = "#000C78") +
-  labs(x = "Median savings",
+  labs(x = "Savings",
        y = "%") +
   theme_classic()
   
@@ -103,3 +103,4 @@ plot1.2_data %>%
   
 # ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
 # ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
+# ggsave(here("figures", "figure1_2_new.png"), plot.1.2_new)
