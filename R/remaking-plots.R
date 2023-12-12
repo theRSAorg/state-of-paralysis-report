@@ -78,6 +78,21 @@ plot1.2_data <- savings_data %>%
   count(saving_bins) %>%
   mutate(percentage = n/sum(n))
 
+plot1.2_data_bin3000 <- savings_data %>%
+  filter(age == "16-24") %>%
+  mutate(
+    saving_bins = case_when(
+      savings == 0 ~ "0",
+      savings > 0 & savings <= 500 ~ "1-500",
+      savings > 500 & savings <= 1000 ~ "501-1000",
+      savings > 1000 & savings <= 1500 ~ "1001-1500",
+      savings > 1500 & savings <= 2000 ~ "1501-2000",
+      savings > 2000 & savings <= 2500 ~ "2001-2500",
+      savings > 2500 & savings <= 3000 ~ "2501-3000",
+      savings > 3000 ~ ">3000")) %>% 
+  count(saving_bins) %>%
+  mutate(percentage = n/sum(n))
+
 #### 3. plot data ####
 # recreate original plot
 # y-axis breaks every 2.5k
@@ -100,8 +115,16 @@ plot.1.2_new <- plot1.2_data %>%
        y = "%") +
   theme_classic()
   
-  
+plot.1.2_new_bin3000 <- plot1.2_data_bin3000 %>%
+  mutate(saving_bins = fct_relevel(saving_bins, "0", "1-500", "501-1000", "1001-1500", "1501-2000", "2001-2500", "2501-3000", ">3000")) %>% 
+  ggplot(aes(x = saving_bins, y = percentage)) +
+  geom_col(fill = "#000C78") +
+  labs(x = "Savings",
+       y = "%") +
+  theme_classic()
+
   
 # ggsave(here("figures", "figure1_2_10.png"), fig1.2_a)
 # ggsave(here("figures", "figure1_2_15.png"), fig1.2_b)
 # ggsave(here("figures", "figure1_2_new.png"), plot.1.2_new)
+# ggsave(here("figures", "figure1_2_new_bin3000.png"), plot.1.2_new_bin3000)
