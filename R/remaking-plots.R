@@ -93,6 +93,21 @@ plot1.2_data_bin3000 <- savings_data %>%
   count(saving_bins) %>%
   mutate(percentage = n/sum(n))
 
+age_groups_no_savings <- savings_data %>%
+  mutate(
+    saving_bins = case_when(
+      savings == 0 ~ "0",
+      savings > 0 & savings <= 500 ~ "1-500",
+      savings > 500 & savings <= 1000 ~ "501-1000",
+      savings > 1000 & savings <= 1500 ~ "1001-1500",
+      savings > 1500 & savings <= 2000 ~ "1501-2000",
+      savings > 2000 & savings <= 2500 ~ "2001-2500",
+      savings > 2500 & savings <= 3000 ~ "2501-3000",
+      savings > 3000 ~ ">3000")) %>% 
+  group_by(age, saving_bins) %>%
+  summarise(n = n()) %>% 
+  mutate(percentage = n/sum(n))
+
 #### 3. plot data ####
 # recreate original plot
 # y-axis breaks every 2.5k
