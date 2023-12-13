@@ -20,11 +20,11 @@ rsa_extra_palette <- c("#F5F5F5",
                        "#21DCFF")
 
 # create mini functions for reading multiple files
-read_rename_ptentype <- function(flnm) {
-  read_tsv(flnm) %>%
-    mutate(filename = flnm) %>% 
-    select(filename, id = SERNUM, age = HHAGEGR2, tenure = PTENTYPE)
-}
+# read_rename_ptentype <- function(flnm) {
+#   read_tsv(flnm) %>%
+#     mutate(filename = flnm) %>% 
+#     select(filename, id = SERNUM, age = HHAGEGR2, tenure = PTENTYPE)
+# }
 
 read_rename_hhagegr2 <- function(flnm) {
   read_tsv(flnm) %>%
@@ -41,23 +41,23 @@ read_rename <- function(flnm) {
 # read in data
 # the data are separated because different variable names were used for the same variables over the years
 # variable names taken from the data dictionaries
-tenure_data_2000_2003 <-
-  list.files(path = here("data", "frs-survey", "2000-2003"),
-             pattern = "\\.tab$",
-             full.names = T) %>% 
-  map_df(~read_rename_ptentype(.)) %>% 
-  mutate(age = as_factor(age),
-         age = fct_recode(age,
-                          NULL = "-1",
-                          "16-24" = "1",
-                          "25-34" = "2",
-                          "35-44" = "3",
-                          "45-54" = "4",
-                          "55-59" = "5",
-                          "60-64" = "6",
-                          "65-74" = "7",
-                          "75-84" = "8",
-                          "85+" = "9"))
+# tenure_data_2000_2003 <-
+#   list.files(path = here("data", "frs-survey", "2000-2003"),
+#              pattern = "\\.tab$",
+#              full.names = T) %>% 
+#   map_df(~read_rename_ptentype(.)) %>% 
+#   mutate(age = as_factor(age),
+#          age = fct_recode(age,
+#                           NULL = "-1",
+#                           "16-24" = "1",
+#                           "25-34" = "2",
+#                           "35-44" = "3",
+#                           "45-54" = "4",
+#                           "55-59" = "5",
+#                           "60-64" = "6",
+#                           "65-74" = "7",
+#                           "75-84" = "8",
+#                           "85+" = "9"))
 
 tenure_data_2003_2008 <-
   list.files(path = here("data", "frs-survey", "2003-2008"),
@@ -95,7 +95,7 @@ tenure_data_2008_2022 <-
                           "75+" = "8"))
 
 # combine the data
-tenure_data <- rbind(tenure_data_2000_2003, tenure_data_2003_2008, tenure_data_2008_2022)
+tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 
 
 # levels(as_factor(tenure_data$age))
@@ -158,9 +158,6 @@ figure1_5 <- tenure_data_factors %>%
   summarise(n = n()) %>% 
   mutate(percentage = 100 * (n /sum(n)),
          year = fct_recode(year,
-                           "2000" = "2000-2001",
-                           "2001" = "2001-2002",
-                           "2002" = "2002-2003",
                            "2003" = "2003-2004",
                            "2004" = "2004-2005",
                            "2005" = "2005-2006",
@@ -179,7 +176,7 @@ figure1_5 <- tenure_data_factors %>%
                            "2018" = "2018-2019",
                            "2019" = "2019-2020",
                            "2020" = "2020-2021",
-                           "2021" = "2021-2022")) %>% 
+                           "2021" = "2021-2022")) %>%
   ggplot(aes(x = year, y = percentage, colour = tenure, group = tenure)) +
   geom_line() +
   theme_bw() +
@@ -187,5 +184,5 @@ figure1_5 <- tenure_data_factors %>%
   ylab("Percentage") + xlab("") 
 
 # ggsave(filename = "./figures/figure1_4_housing_tenure_2021-22.png")
-ggsave(filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
+# ggsave(filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
 
