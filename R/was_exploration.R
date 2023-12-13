@@ -100,14 +100,14 @@ debt_to_income_ratio_dotplot <- data_1620 %>%
   drop_na(age) %>%
   ggplot() +
   geom_segment( aes(x=age, xend=age, y=mean_debt_to_income_ratio, yend=mean_debt_to_income_ratio_2020), colour="grey") +
-  geom_point( aes(x=age, y=mean_debt_to_income_ratio, colour="2016-2018"), size=2 ) +
-  geom_point( aes(x=age, y=mean_debt_to_income_ratio_2020, colour="2018-2020"), size=2 ) +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio, colour="2016-2018"), size=3 ) +
+  geom_point( aes(x=age, y=mean_debt_to_income_ratio_2020, colour="2018-2020"), size=3 ) +
   scale_y_continuous(n.breaks = 8) +
   coord_flip() +
   labs(x = "Age",
        y = "Mean debt-to-income ratio") +
   theme_classic() +
-  scale_colour_manual(values = c("#000000", "#03ECDD"),
+  scale_colour_manual(values = c("#000C7860", "#FFA72F60"),
                       guide = guide_legend(),
                       name = "Year range") +
   theme(legend.position = "bottom",
