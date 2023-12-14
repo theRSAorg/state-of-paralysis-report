@@ -1,43 +1,46 @@
-rm(list = ls()) # clear the work space
-# Packages
+# Wealth and Assets Survey data exploration
+
+# Authors: Eirini Zormpa & Jolyon Wilson-Smith
+# December 2023
+
+#### 1. Load packages ####
 packages <- c('here', 'readr', 'tidyr', 'dplyr','ggplot2','forcats', 'GGally')
 pkg_notinstall <- packages[!(packages %in% installed.packages()[,"Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
 
-# 2018-2020 data
-data_1820 <- readr::read_tsv("./data/was_round_7_hhold_eul_march_2022.tab") %>% 
+#### 2. Read in data ####
+
+# 2016-2018 data (Round 6)
+data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
+  # variables were selected by examining the data dictionaries
+  select(id = CASER6,
+         age = HRPDVAge8R6,
+         credit_debt = totcsc_persr6_aggr,
+         debt_to_income_ratio = HHdebtIncRatr6,
+         YearR6) %>% 
+  mutate(year = "2016-2018")
+
+# 2018-2020 data (Round 7)
+data_1820 <- read_tsv(here("data", "was_round_7_hhold_eul_march_2022.tab")) %>% 
   select(id = CASER7,
-         #yearr7,
          age = HRPDVAge8r7,
          credit_debt = totcsc_persr7_aggr,
-         debt_to_income_ratio = HHdebtIncRatr7) %>% 
+         debt_to_income_ratio = HHdebtIncRatr7,
+         yearr7) %>% 
   mutate(year = "2018-2020")
 
-# sanity checks
+#### 3. Sanity checks ####
 
 # checking that all identifiers are unique, i.e. no respondents are repeated
 length(unique(data_1820$id)) == length(data_1820$id)
-
-# checking the years included in the dataset
-#levels(as.factor(data_1820$yearr7))
-
-# 2016-2018 data
-data_1618 <- readr::read_tsv("./data/was_round_6_hhold_eul_april_2022.tab") %>% 
-  select(id = CASER6,
-         #YearR6,
-         age = HRPDVAge8R6,
-         credit_debt = totcsc_persr6_aggr,
-         debt_to_income_ratio = HHdebtIncRatr6) %>% 
-  mutate(year = "2016-2018")
-
-# checking that all identifiers are unique, i.e. no respondents are repeated
 length(unique(data_1618$id)) == length(data_1618$id)
 
 # checking the years included in the dataset
-#levels(as.factor(data_1618$YearR6))
+levels(as.factor(data_1618$YearR6))
+levels(as.factor(data_1820$yearr7))
 
-# combine the datasets from years 2016-2018 and 2018-2020
+#### 4. Combine data from years 2016-2018 and 2018-2020 ####
 data_1620 <- rbind(data_1820, data_1618) %>% 
   mutate(age = as_factor(age),
          age = fct_recode(age,
@@ -87,9 +90,6 @@ debt_connected_dotplot <- data_1620 %>%
   theme(legend.position = "bottom",
         panel.border    = element_blank())
 
-# ggsave(here("figures", "1.3_debt_barplot.png"), debt_chage_barplot)
-# ggsave(here("figures", "1.3_debt_dotplot.png"), debt_connected_dotplot)
-
 # bar plot for debt-to-income ratio
 debt_to_income_ratio_dotplot <- data_1620 %>%
   group_by(age, year) %>%
@@ -113,4 +113,6 @@ debt_to_income_ratio_dotplot <- data_1620 %>%
   theme(legend.position = "bottom",
         panel.border    = element_blank())
 
+# ggsave(here("figures", "1.3_debt_barplot.png"), debt_chage_barplot)
+# ggsave(here("figures", "1.3_debt_dotplot.png"), debt_connected_dotplot)
 # ggsave(here("figures", "1.3_debt_income_ratio_dotplot.png"), debt_to_income_ratio_dotplot)
