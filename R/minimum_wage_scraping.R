@@ -1,7 +1,7 @@
 rm(list = ls()) # clear the workspace
 
 # Packages
-packages <- c('rvest','dplyr','tibble','tidyr','ggplot2','lubridate','readr')
+packages <- c('rvest','dplyr','tibble','tidyr','ggplot2','lubridate','readr','stringr')
 pkg_notinstall <- packages[!(packages %in% installed.packages()[,"Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
@@ -72,27 +72,48 @@ pre_nlw_rates_prop_long <- pre_nlw_rates %>%
 pre_nlw_rates <- merge(pre_nlw_rates_long, pre_nlw_rates_prop_long, by = c("Year", "Age")) %>%
   mutate(
     Year = lubridate::dmy(Year)
+  ) %>%
+  mutate(
+    # reorder levels
+    Age = forcats::fct_relevel(Age,
+                               "Apprentice",
+                               "Age 16-17 Rate",
+                               "Youth Development Rate (Age 18-21)",
+                               "Main Rate (Age 22+)"),
+    # then recode levels of age to show changes in groups 
+    Age = forcats::fct_recode(Age, 
+                              `16 to 17` = "Age 16-17 Rate",
+                              `18 to 21 (until 2010); 18 to 20 (2010 on)` = "Youth Development Rate (Age 18-21)",
+                              `22 and over (until 2010); 21 and over (2010 on)` = "Main Rate (Age 22+)")
   )
 
 pre_nlw_rates %>%
-  subset(Age != "Main Rate (Age 22+)") %>%
+  # subset(!stringr::str_detect(Age, "22")) %>%
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_point() + 
   geom_line() +
   theme_bw() +
-  scale_colour_manual(values = rsa_palette, name = "Group") +
+  # theme(panel.grid.minor = element_blank()) +
+  scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  # scale_y_continuous(breaks = seq(0,10,1)) +
-  ylab("Proprotion of Main Rate (%)")
+  scale_y_continuous(breaks = seq(40,100,10)) + coord_cartesian(ylim = c(40,100)) +
+  ylab("Proportion of adult rate (%)")
+
+ggsave(filename = "./figures/minimum_Wage_1999-2016.png")
 
 ################################################################################
 
 
-######################
-### Post 2016 rates ###
-######################
+################################################################################
+### Post 2016 rates ############################################################
+################################################################################
 
 nlw_rates <- table_2[-which(table_2$Year == "Year"), ]
+
+# add 2023 data
+# from: https://www.gov.uk/government/publications/the-national-minimum-wage-in-2023/the-national-minimum-wage-in-2023
+new_data <- c("1 Apr 2023", "£10.42", "£10.18", "£7.49", "£5.28", "£5.28")
+nlw_rates <- rbind(nlw_rates, new_data)
 
 # Get the national living wage rates (i.e., 2016 onwards)
 nlw_rates <- nlw_rates %>%
@@ -116,18 +137,36 @@ nlw_rates_prop_long <- nlw_rates %>%
 nlw_rates <- merge(nlw_rates_long, nlw_rates_prop_long, by = c("Year", "Age")) %>%
   mutate(
     Year = lubridate::dmy(Year)
+  ) %>%
+  
+  mutate(
+    # reorder levels
+    Age = forcats::fct_relevel(Age,
+                               "Apprentice",
+                               "Under 18",
+                               "18 to 20",
+                               "21 to 24",
+                               "25 and over"),
+    # then recode levels of age to show changes in groups 
+    Age = forcats::fct_recode(Age, 
+                              `16 to 17` = "Under 18",
+                              `21 to 24 (until 2021); 21 to 22 (2021 on)` = "21 to 24",
+                              `25+ (until 2021; 23+ (2021 on)` = "25 and over")
   )
 
 nlw_rates %>%
-  subset(Age != "25 and over") %>%
+  # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_point() + 
   geom_line() +
   theme_bw() +
-  scale_colour_manual(values = rsa_palette, name = "Group") +
+  # theme(panel.grid.minor = element_blank()) +
+  scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  # scale_y_continuous(breaks = seq(0,10,1)) +
-  ylab("Wage (£)")
+  scale_y_continuous(breaks = seq(40, 100, 10)) + coord_cartesian(ylim = c(40,100)) +
+  ylab("Proprorion of adult rate (%)")
+
+ggsave(filename = "./figures/minimum_Wage_2016-2023.png")
 
 ################################################################################
 
