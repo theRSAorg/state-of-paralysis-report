@@ -16,6 +16,10 @@ data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
   # variables were selected by examining the data dictionaries
   select(id = CASER6,
          age = HRPDVAge8R6,
+         # if the total household income before housing costs was 0 or below, the value of this variable was set to 0
+         # if income was over zero then this variable was calculated as:
+         # (Hhold value of financial liabilities* (for credit cards including persistent credit card debt only) - hhold value of student loans (from banks and student loan companies)) / total hhold income before housing costs
+         # *financial liabilities = credit/store/charge cards + mail orders + Hire Purchase accounts + formal/informal/student loans + overdrawn accounts + arrears
          debt_to_income_ratio = HHdebtIncRatr6,
          YearR6) %>% 
   mutate(year = "2016-2018")
