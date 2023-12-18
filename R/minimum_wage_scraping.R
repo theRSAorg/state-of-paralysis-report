@@ -277,64 +277,6 @@ weeks_wages <- growth_table %>%
   )
 
 ################################################################################
-#### Plotting post-2016 data separately for pre and post 2021 ##################
-################################################################################
-
-# Separate out pre and post change to categories in 2021
-nlw_rates_1 <- nlw_rates[1:which(nlw_rates$Year == "Year")-1,]
-
-# get the new names to apply to table 2 and apply them to table 2
-nlw_2_names <- nlw_rates[which(nlw_rates$Year == "Year"),] 
-nlw_rates_2 <- nlw_rates[(which(nlw_rates$Year == "Year")+1):nrow(nlw_rates),]
-colnames(nlw_rates_2) <- nlw_2_names 
-
-# Pivot longer for plotting
-nlw_rates_1 <- nlw_rates_1 %>%
-  tidyr::pivot_longer(cols = !"Year",
-    names_to = "age",
-    values_to = "wage"
-  ) %>%
-  mutate(
-    Year = lubridate::dmy(Year), # make date format
-    wage = as.numeric(substring(wage, 2, nchar(wage))), # strip £ sign
-    NLW = "Pre-2021" # create the pre-post grouping
-  )
-
-# Pivot longer
-nlw_rates_2 <- nlw_rates_2 %>%
-  tidyr::pivot_longer(cols = !"Year",
-                      names_to = "age",
-                      values_to = "wage"
-  ) %>%
-  mutate(
-    Year = lubridate::dmy(Year),
-    wage = as.numeric(substring(wage, 2, nchar(wage))), # drop £ symbol and convert
-    NLW = "2021 onwards"
-  )
-
-# Create tidier factors
-nlw_combined <- bind_rows(nlw_rates_1, nlw_rates_2) %>%
-  mutate(
-    NLW = factor(NLW, levels = c("Pre-2021","2021 onwards")),
-    age = factor(age, levels = c("Apprentice", 
-                                 "Under 18", "16 to 17",
-                                 "18 to 20",
-                                 "21 to 24", "21 to 22",
-                                 "25 and over","23 and over"))
-  )
-
-ggplot2::ggplot(data = nlw_combined, aes(Year, wage, colour = age, linetype = NLW)) +
-  geom_point() + 
-  geom_line() +
-  theme_bw() +
-  scale_colour_manual(values = rsa_palette, name = "Group") +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  scale_y_continuous(breaks = seq(0,10,1)) +
-  ylab("Wage (£)")
-
-################################################################################
-
-################################################################################
 # Wider format for exporting tables #
 ################################################################################
 
