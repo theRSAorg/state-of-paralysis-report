@@ -16,7 +16,6 @@ data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
   # variables were selected by examining the data dictionaries
   select(id = CASER6,
          age = HRPDVAge8R6,
-         credit_debt = totcsc_persr6_aggr,
          debt_to_income_ratio = HHdebtIncRatr6,
          YearR6) %>% 
   mutate(year = "2016-2018")
@@ -25,7 +24,6 @@ data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
 data_1820 <- read_tsv(here("data", "was_round_7_hhold_eul_march_2022.tab")) %>% 
   select(id = CASER7,
          age = HRPDVAge8r7,
-         credit_debt = totcsc_persr7_aggr,
          debt_to_income_ratio = HHdebtIncRatr7,
          yearr7) %>% 
   mutate(year = "2018-2020")
@@ -52,43 +50,6 @@ data_1620 <- rbind(data_1820, data_1618) %>%
                           "65-74" = "7",
                           "75+" = "8"))
 
-# bar plot for debt change
-debt_chage_barplot <- data_1620 %>%
-  group_by(age, year) %>%
-  summarise(mean_credit_debt = mean(credit_debt, na.rm = T)) %>%
-  ungroup() %>%
-  mutate(debt_change = lead(mean_credit_debt) - mean_credit_debt) %>%
-  filter(year == "2016-2018") %>%
-  drop_na(age) %>% 
-  ggplot(aes(x = age, y = debt_change)) +
-  geom_col(fill = "#000C78") +
-  scale_y_continuous(n.breaks = 10) +
-  labs(x = "Age",
-       y = "") +
-  theme_classic()
-
-# connected dot plot for debt
-debt_connected_dotplot <- data_1620 %>%
-  group_by(age, year) %>%
-  summarise(mean_credit_debt = mean(credit_debt, na.rm = T)) %>%
-  ungroup() %>%
-  mutate(mean_credit_debt_2020 = lead(mean_credit_debt)) %>%
-  filter(year == "2016-2018") %>%
-  drop_na(age) %>%
-  ggplot() +
-    geom_segment( aes(x=age, xend=age, y=mean_credit_debt, yend=mean_credit_debt_2020), color="grey") +
-    geom_point( aes(x=age, y=mean_credit_debt, color="2016-2018"), size=2 ) +
-    geom_point( aes(x=age, y=mean_credit_debt_2020, color="2018-2020"), size=2 ) +
-  scale_y_continuous(n.breaks = 8) +
-    coord_flip() +
-    labs(x = "Age",
-         y = "Mean credit card debt") +
-    theme_classic() +
-  scale_colour_manual(values = c("#000000", "#03ECDD"),
-                      guide = guide_legend(),
-                      name = "Year range") +
-  theme(legend.position = "bottom",
-        panel.border    = element_blank())
 
 # bar plot for debt-to-income ratio
 debt_to_income_ratio_dotplot <- data_1620 %>%
