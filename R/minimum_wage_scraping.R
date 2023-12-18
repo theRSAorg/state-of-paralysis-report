@@ -151,7 +151,7 @@ all_nlw_rates <- merge(nlw_rates_long, nlw_rates_prop_long, by = c("Year", "Age"
     Age = forcats::fct_recode(Age, 
                               `16 to 17` = "Under 18",
                               `21 to 24 (2016-2020); 21 to 22 (2021 on)` = "21 to 24",
-                              `25+ (2016-2020); 23+ (2021 on)` = "25 and over")
+                              `National Living Wage: \n25+ (2016-2020); 23+ (2021 on)` = "25 and over")
   )
 
 all_nlw_rates %>%
@@ -188,7 +188,7 @@ all_wage_data <- rbind(all_pre_nlw_rates, all_nlw_rates_edit) %>%
                                "18 to 21 (1999-2009); 18 to 20 (2010 on)",
                                "21 to 24 (2016-2020); 21 to 22 (2021 on)",
                                "22+ (1999-2009); 21+ (2010-2015)",
-                               "25+ (2016-2020); 23+ (2021 on)")
+                               "National Living Wage: \n25+ (2016-2020); 23+ (2021 on)")
   )
 
 all_wage_data %>%
@@ -210,17 +210,17 @@ ggsave(filename = "./figures/minimum_wage_1999-2023.png")
 
 all_wage_data %>%
   filter(
-    !(stringr::str_detect(Age, "^25")) &
+    !(stringr::str_detect(Age, "^National")) &
             !(stringr::str_detect(Age, "^22"))
       ) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") + 
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") + 
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") + 
-  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 100, hjust = 0, label = "Adult group = 22+") + 
-  annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 100, hjust = 0, label = "Adult group = 21+") + 
-  annotate(geom = "text", x = lubridate::ymd("2016-06-01"), y = 100, hjust = 0, label = "Adult group = 25+") + 
-  annotate(geom = "text", x = lubridate::ymd("2021-06-01"), y = 100, hjust = 0, label = "Adult group = 23+") + 
+  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 22+") + 
+  annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = 21+") + 
+  annotate(geom = "text", x = lubridate::ymd("2016-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (25+)") + 
+  annotate(geom = "text", x = lubridate::ymd("2021-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (23+)") + 
   geom_point() + 
   geom_line() +
   theme_bw() +
@@ -228,7 +228,7 @@ all_wage_data %>%
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
   scale_y_continuous(breaks = seq(40, 100, 10)) + 
-  coord_cartesian(ylim = c(40,100), 
+  coord_cartesian(ylim = c(40,105), 
                   xlim = c(lubridate::ymd("1999-01-01"), 
                            lubridate::ymd("2024-01-01"))) +
   ylab("Proprorion of adult rate (%)")
