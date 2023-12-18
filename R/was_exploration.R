@@ -11,6 +11,8 @@ lapply(packages, library, character.only = TRUE)
 
 #### 2. Read in data ####
 
+# household-level data
+
 # 2016-2018 data (Round 6)
 data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
   # variables were selected by examining the data dictionaries
@@ -32,6 +34,17 @@ data_1820 <- read_tsv(here("data", "was_round_7_hhold_eul_march_2022.tab")) %>%
          credit_debt = totcsc_persr7_aggr,
          fin_liab_to_income_ratio = HHdebtIncRatr7,
          yearr7) %>% 
+  mutate(year = "2018-2020")
+
+# person-level data
+data_1618_person <- read_tsv(here("data", "was_round_6_person_eul_april_2022.tab")) %>%
+  select(id = CASER6,
+         age = HRPDVAge8R6) %>% 
+  mutate(year = "2016-2018")
+
+data_1820_person <- read_tsv(here("data", "was_round_7_person_eul_june_2022.tab")) %>% 
+  select(id = CASER7,
+         age = HRPDVAge8r7) %>% 
   mutate(year = "2018-2020")
 
 #### 3. Sanity checks ####
@@ -60,7 +73,18 @@ data_1620 <- rbind(data_1820, data_1618) %>%
                           "65-74" = "7",
                           "75+" = "8"))
 
-#### 5. Debt stats ####
+data_1620_person <- rbind(data_1820_person, data_1618_person) %>% 
+  mutate(age = as_factor(age),
+         age = fct_recode(age,
+                          "16-24" = "2",
+                          "25-34" = "3",
+                          "35-44" = "4",
+                          "45-54" = "5",
+                          "55-64" = "6",
+                          "65-74" = "7",
+                          "75+" = "8"))
+
+#### 5. Debt and other stats ####
 data_1620 %>% 
   group_by(age, year) %>% 
   summarise(mean_credit_debt = mean(credit_debt)) %>% 
@@ -68,6 +92,23 @@ data_1620 %>%
   mutate(debt_change = lead(mean_credit_debt)/mean_credit_debt) %>% 
   filter(year == "2016-2018") %>% 
   select(age, debt_change)
+
+# see how many observations come from each group
+# household
+data_1620 %>%
+  group_by(year, age) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  group_by(year) %>% 
+  mutate(percentage = n/sum(n))
+
+# individual
+data_1620_person %>%
+  group_by(year, age) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  group_by(year) %>% 
+  mutate(percentage = n/sum(n))
 
 #### 6. Data visualisation ####
 
