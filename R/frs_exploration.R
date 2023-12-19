@@ -1,12 +1,22 @@
-# 04/12/23
-# For tracking down data files and trying to replicate plots in document
+# Family Resources Survey data exploration
 
-# Packages
+# Authors: Eirini Zormpa & Jolyon Wilson-Smith
+# December 2023
+
+# FRS data is used in:
+# figure 1.4 (housing tenure by age group),
+# figure 1.5 (housing tenure among 16-24 year olds, 2003-2021), and
+# figure 1.6 (median percentage of income spent on housing by age group)
+# of the 'Young People's Future Health and Economic Security' report
+
+#### 1. Set-up ####
+# packages
 packages <- c('here', 'readr', 'purrr', 'tidyr', 'dplyr','forcats', 'stringr', 'ggplot2')
 pkg_notinstall <- packages[!(packages %in% installed.packages()[,"Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
 
+# palettes
 rsa_palette <- c("#03ECDD",
                  "#000000",
                  "#FF21B8",
@@ -19,7 +29,14 @@ rsa_extra_palette <- c("#F5F5F5",
                        "#373737",
                        "#21DCFF")
 
+#### 2. Read in data ####
 
+# create mini-functions for reading in data
+# this is useful for read in data from multiple files at once
+
+# there are different functions because different variable names are used
+# specifically, from 2003 to 2008 age was captured in HHAGEGR2
+# but from 2008 HHAGEGR2 is empty and the data is in HHAGEGR3
 read_rename_hhagegr2 <- function(flnm) {
   read_tsv(flnm) %>%
     mutate(filename = flnm) %>% 
@@ -39,6 +56,7 @@ tenure_data_2003_2008 <-
              full.names = T) %>% 
   map_df(~read_rename_hhagegr2(.)) %>% 
   mutate(age = as_factor(age),
+         # information taken from data dictionaries
          age = fct_recode(age,
                           NULL = "-1",
                           "16-24" = "1",
@@ -71,6 +89,7 @@ tenure_data_2008_2022 <-
 # combine the data
 tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 
+#### 3. Wrangle data ####
 
 # levels(as_factor(tenure_data$age))
 # levels(as_factor(tenure_data$tenure))
@@ -81,10 +100,12 @@ tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 tenure_data_factors <- tenure_data %>%
   mutate(year = str_sub(filename, start = -22, end = -14),
          year = as_factor(year),
+         # HHAGEGR2 and HHAGEGR3 have different levels
          age = fct_collapse(age,
                             "75+" = c("75-84", "85+")),
          tenure = as_factor(tenure),
          tenure = fct_recode(tenure,
+                             # information from data dictionaries
                              "Rented from Council" = "1",
                              "Rented from Housing Association" = "2",
                              "Rented privately unfurnished" = "3",
@@ -108,10 +129,9 @@ tenure_data_factors <- tenure_data %>%
          ) %>% 
   select(-filename)
 
-levels(tenure_data_factors$year)
+# levels(tenure_data_factors$year)
 
-# length(is.na(tenure_data_factors$age)[is.na(tenure_data_factors$age) == TRUE])
-# there's way too many NAs for age when using HHAGEGR2
+#### 4. Visualise data ####
 
 # figure 1.4
 figure1_4 <- tenure_data_factors %>%
@@ -157,10 +177,12 @@ figure1_5 <- tenure_data_factors %>%
   scale_colour_manual(values = rsa_palette, name = "Tenure") +
   ylab("Percentage") + xlab("") 
 
-# ggsave(filename = "./figures/figure1_4_housing_tenure_2021-22.png")
-# ggsave(filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
 
 # fig 1.6
+
+# this figure requires more variables that the previous plots
+# so data is read in and cleaned independently
+
 frs_2021_2022 <- read_tsv(here("data", "frs-survey", "2008-2022", "2021-2022_househol.tab"))
 
 fig_1.6_data <- frs_2021_2022 %>%
@@ -169,8 +191,7 @@ fig_1.6_data <- frs_2021_2022 %>%
          income_num = HHINC,
          income_band = HHINCBND,
          housing_costs_gb = GBHSCOST,
-         housing_costs_ni = NIHSCOST,
-         tenure = PTENTYP2) %>%
+         housing_costs_ni = NIHSCOST) %>%
   mutate(
     age = fct_recode(as_factor(age),
                      "16-24" = "1",
@@ -194,19 +215,10 @@ fig_1.6_data <- frs_2021_2022 %>%
                              "£1800 and less than £2000" = "10",
                              "Above £2000" = "11"),
     housing_costs_gb = na_if(housing_costs_gb, -1),
-    housing_costs_ni = na_if(housing_costs_ni, -1),
-    tenure = fct_recode(as_factor(tenure),
-                        "Rented from Council" = "1",
-                        "Rented from Housing Association" = "2",
-                        "Rented privately unfurnished" = "3",
-                        "Rented privately furnished" = "4",
-                        "Owned outright" = "5" ,
-                        "Owned with mortgage" = "6")) %>% 
+    housing_costs_ni = na_if(housing_costs_ni, -1)) %>% 
   unite("housing_costs", housing_costs_gb:housing_costs_ni, na.rm = TRUE) %>% 
   mutate(housing_costs = as.numeric(housing_costs),
          percentage = (housing_costs/income_num)*100)
-
-# find a definition of affordability and show how many people do or do not have it by age group
 
 fig1.6 <- fig_1.6_data %>% 
   group_by(age) %>% 
@@ -218,8 +230,6 @@ fig1.6 <- fig_1.6_data %>%
        y = "Median percentage") +
   theme_classic()
 
-glimpse(fig_1.6_data)
-levels(as_factor(frs_2020_2022$HHAGEGR3))
-levels(as_factor(fig_1.6_data$income_band))
-
+# ggsave(filename = "./figures/figure1_4_housing_tenure_2021-22.png")
+# ggsave(filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
 # ggsave(filename = "./figures/figure1_6_housing-costs-income-percentage.png", width = 9, height = 3.62)
