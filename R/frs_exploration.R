@@ -19,12 +19,6 @@ rsa_extra_palette <- c("#F5F5F5",
                        "#373737",
                        "#21DCFF")
 
-# create mini functions for reading multiple files
-# read_rename_ptentype <- function(flnm) {
-#   read_tsv(flnm) %>%
-#     mutate(filename = flnm) %>% 
-#     select(filename, id = SERNUM, age = HHAGEGR2, tenure = PTENTYPE)
-# }
 
 read_rename_hhagegr2 <- function(flnm) {
   read_tsv(flnm) %>%
@@ -38,26 +32,6 @@ read_rename <- function(flnm) {
     select(filename, id = SERNUM, age = HHAGEGR3, tenure = PTENTYP2)
 }
 
-# read in data
-# the data are separated because different variable names were used for the same variables over the years
-# variable names taken from the data dictionaries
-# tenure_data_2000_2003 <-
-#   list.files(path = here("data", "frs-survey", "2000-2003"),
-#              pattern = "\\.tab$",
-#              full.names = T) %>% 
-#   map_df(~read_rename_ptentype(.)) %>% 
-#   mutate(age = as_factor(age),
-#          age = fct_recode(age,
-#                           NULL = "-1",
-#                           "16-24" = "1",
-#                           "25-34" = "2",
-#                           "35-44" = "3",
-#                           "45-54" = "4",
-#                           "55-59" = "5",
-#                           "60-64" = "6",
-#                           "65-74" = "7",
-#                           "75-84" = "8",
-#                           "85+" = "9"))
 
 tenure_data_2003_2008 <-
   list.files(path = here("data", "frs-survey", "2003-2008"),
