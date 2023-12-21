@@ -1,3 +1,11 @@
+# Minimum wage exploration
+# Author: Jolyon Miles-Wilson
+# Date: December 2023
+
+# Scrapes data from https://www.nibusinessinfo.co.uk/content/national-minimum-wage-previous-rates 
+# (which is validated against a government source: https://researchbriefings.files.parliament.uk/documents/CBP-7735/CBP-7735.pdf)
+# to explore trends in minimum wage provision from 1999 to 2023.
+
 rm(list = ls()) # clear the workspace
 
 # Packages
