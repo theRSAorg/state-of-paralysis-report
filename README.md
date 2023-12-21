@@ -6,10 +6,10 @@ They are included here to make it easier for you to recreate our calculations an
 The links to each of the datasets are provided above.
 
 The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources Survey** from 2003-2004 to 2021-2022, obtained from the UK Data Service) are not included here as that would violate the End User Licence of the UK Data Service.
-A complete list of the data we used, along with links and persistent identifiers, can be found in [Eirini to fill in].
+A complete list of the data we used, along with links and persistent identifiers, can be found in the [`data-table.md`](/data-table.md) file.
 
 ## Folder structure
-```
+``
 +---data
 |   |   (data are all downloaded by scripts and could in principle be deleted)
 |   |
