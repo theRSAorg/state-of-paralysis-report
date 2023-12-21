@@ -9,7 +9,7 @@ The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources
 A complete list of the data we used, along with links and persistent identifiers, can be found in the [`data-table.md`](/data-table.md) file.
 
 ## Folder structure
-``
+```
 +---data
 |   |   (data are all downloaded by scripts and could in principle be deleted)
 |   |
@@ -21,11 +21,13 @@ A complete list of the data we used, along with links and persistent identifiers
 |   |   income.ipynb (Jupyter notebook using Annual Survey for Hours and Earning data to explore wages for young people)
 |   |
 +---R
-|       ashe-exploration.R (script using Annual Survey for Hours and Earning data to explore wage growth rates by age group)
-|       frs_exploration.R (script using Family Resources Survey data to explore questions around housing for young people)
-|       minimum_wage_scraping.R ([Jolyon to fill in])
-|       was_exploration.R  (script using Wealth and Assets Survey data to explore questions around debt and financial liabilities for young people)
-|
+|   |   ashe-exploration.R (script using Annual Survey for Hours and Earning data to explore wage growth rates by age group)
+|   |   frs_exploration.R (script using Family Resources Survey data to explore questions around housing for young people)
+|   |   minimum_wage_scraping.R (Scrapes data from https://www.nibusinessinfo.co.uk/content/national-minimum-wage-previous-rates
+|   |           [which is validated against a government source: https://researchbriefings.files.parliament.uk/documents/CBP-7735/CBP-7735.pdf]
+|   |           to explore trends in minimum wage provision from 1999 to 2023.)
+|   |   was_exploration.R  (script using Wealth and Assets Survey data to explore questions around debt and financial liabilities for young people)
+|   |
 \---tables
         wage_growth_2016-2023.docx ([Jolyon to fill in])
 ```
