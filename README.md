@@ -9,7 +9,7 @@ The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources
 A complete list of the data we used, along with links and persistent identifiers, can be found in the [`data-table.md`](/data-table.md) file.
 
 ## Folder structure
-``
+```
 +---data
 |   |   (data are all downloaded by scripts and could in principle be deleted)
 |   |
