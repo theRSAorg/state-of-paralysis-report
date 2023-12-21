@@ -1,6 +1,6 @@
 # Family Resources Survey data exploration
 
-# Authors: Eirini Zormpa & Jolyon Wilson-Smith
+# Authors: Eirini Zormpa & Jolyon Miles-Wilson
 # December 2023
 
 # FRS data is used in:
@@ -49,7 +49,8 @@ read_rename <- function(flnm) {
     select(filename, id = SERNUM, age = HHAGEGR3, tenure = PTENTYP2)
 }
 
-
+# NB: this data is not included in the repository, but is available through the UK Data Service
+# more information can be found in the README
 tenure_data_2003_2008 <-
   list.files(path = here("data", "frs-survey", "2003-2008"),
              pattern = "\\.tab$",
@@ -69,6 +70,7 @@ tenure_data_2003_2008 <-
                           "75-84" = "8",
                           "85+" = "9"))
 
+# NB: as above, this data came from the UK Data Service and could not be included here
 tenure_data_2008_2022 <-
   list.files(path = here("data", "frs-survey", "2008-2022"),
              pattern = "\\.tab$",
@@ -90,9 +92,6 @@ tenure_data_2008_2022 <-
 tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 
 #### 3. Wrangle data ####
-
-# levels(as_factor(tenure_data$age))
-# levels(as_factor(tenure_data$tenure))
 
 # rename the levels for age and tenure
 # information taken from the data dictionaries
@@ -128,8 +127,6 @@ tenure_data_factors <- tenure_data %>%
                                      "Own outright"))
          ) %>% 
   select(-filename)
-
-# levels(tenure_data_factors$year)
 
 #### 4. Visualise data ####
 
@@ -182,7 +179,8 @@ figure1_5 <- tenure_data_factors %>%
 
 # this figure requires more variables that the previous plots
 # so data is read in and cleaned independently
-
+# like before, this data is not included in the repository
+# to comply with the UK Data Service End User Licence
 frs_2021_2022 <- read_tsv(here("data", "frs-survey", "2008-2022", "2021-2022_househol.tab"))
 
 fig_1.6_data <- frs_2021_2022 %>%
