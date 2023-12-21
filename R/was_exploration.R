@@ -1,6 +1,6 @@
 # Wealth and Assets Survey data exploration
 
-# Authors: Eirini Zormpa & Jolyon Wilson-Smith
+# Authors: Eirini Zormpa & Jolyon Miles-Wilson
 # December 2023
 
 #### 1. Load packages ####
@@ -12,6 +12,11 @@ lapply(packages, library, character.only = TRUE)
 #### 2. Read in data ####
 
 # household-level data
+
+# NB: the data read in below is not included in the repository
+# that is because the data comes from the UK Data Service and
+# it is not permitted under their End User Licence to redistribute data
+# there is more information in the README file
 
 # 2016-2018 data (Round 6)
 data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
