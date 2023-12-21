@@ -100,7 +100,7 @@ all_pre_nlw_rates <- merge(pre_nlw_rates_long, pre_nlw_rates_prop_long, by = c("
     Age = forcats::fct_recode(Age,
       `16 to 17` = "Age 16-17 Rate",
       `18 to 21 (1999-2009); 18 to 20 (2010 on)` = "Youth Development Rate (Age 18-21)",
-      `22+ (1999-2009); 21+ (2010-2015)` = "Main Rate (Age 22+)"
+      `'Main rate': \n22+ (1999-2009); 21+ (2010-2015)` = "Main Rate (Age 22+)"
     )
   )
 
@@ -214,10 +214,17 @@ all_wage_data <- rbind(all_pre_nlw_rates, all_nlw_rates_edit) %>%
       "16 to 17",
       "18 to 21 (1999-2009); 18 to 20 (2010 on)",
       "21 to 24 (2016-2020); 21 to 22 (2021 on)",
-      "22+ (1999-2009); 21+ (2010-2015)",
+      "'Main rate': \n22+ (1999-2009); 21+ (2010-2015)",
       "National Living Wage: \n25+ (2016-2020); 23+ (2021 on)"
     )
   )
+
+# define coords to be used for joining main rate lines
+line_coords <- data.frame(x = c(lubridate::ymd("2015-10-01"), lubridate::ymd("2016-04-01")),
+                          y = c(all_wage_data$Wage[which(all_wage_data$Year == lubridate::ymd("2015-10-01")
+                                                         & all_wage_data$Age == "'Main rate': \n22+ (1999-2009); 21+ (2010-2015)")],
+                                all_wage_data$Wage[which(all_wage_data$Year == lubridate::ymd("2016-04-01")
+                                                         & all_wage_data$Age == "National Living Wage: \n25+ (2016-2020); 23+ (2021 on)")]))
 
 all_wage_data %>%
   # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
@@ -225,6 +232,11 @@ all_wage_data %>%
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") +
+  geom_segment(aes(x = line_coords$x[1], xend = line_coords$x[2],
+                   y = line_coords$y[1], yend = line_coords$y[2]), 
+               #linetype = "dotted",
+               lty = "11",
+               size = 1) +
   geom_point() +
   geom_line() +
   theme_bw() +
@@ -234,20 +246,21 @@ all_wage_data %>%
   scale_y_continuous(breaks = seq(3, 11, 1)) + # coord_cartesian(ylim = c(40,100)) +
   ylab("Wage (£)")
 
+
 # save plot
-# ggsave(filename = "./figures/minimum_wage_1999-2023.png")
+ggsave(filename = "./figures/minimum_wage_1999-2023.png")
 
 all_wage_data %>%
   filter(
     !(stringr::str_detect(Age, "^National")) &
-      !(stringr::str_detect(Age, "^22"))
+      !(stringr::str_detect(Age, "^'Main"))
   ) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") +
-  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 22+") +
-  annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = 21+") +
+  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 'Main rate' (22+)") +
+  annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = \n'Main rate' (21+)") +
   annotate(geom = "text", x = lubridate::ymd("2016-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (25+)") +
   annotate(geom = "text", x = lubridate::ymd("2021-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (23+)") +
   geom_point() +
@@ -267,7 +280,7 @@ all_wage_data %>%
   ylab("Proprorion of adult rate (%)")
 
 # save plot
-# ggsave(filename = "./figures/minimum_wage_proportion_1999-2023.png")
+ggsave(filename = "./figures/minimum_wage_proportion_1999-2023.png")
 
 ################################################################################
 
