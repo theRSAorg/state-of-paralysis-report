@@ -236,7 +236,7 @@ all_wage_data %>%
                    y = line_coords$y[1], yend = line_coords$y[2]), 
                #linetype = "dotted",
                lty = "11",
-               size = 1) +
+               size = 0.5) +
   geom_point() +
   geom_line() +
   theme_bw() +
