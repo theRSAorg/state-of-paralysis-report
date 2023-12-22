@@ -5,7 +5,20 @@ The data included in the `data` folder come from the Office for National Statist
 They are included here to make it easier for you to recreate our calculations and plots only; if you are interested in reusing these data for your own purposes, please refer to the Office for National Statistics website.
 The links to each of the datasets are provided above.
 
-The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources Survey** from 2003-2004 to 2021-2022, obtained from the UK Data Service) are not included here as that would violate the End User Licence of the UK Data Service.
+The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources Survey** from 2003-2004 to 2021-2022, obtained from the UK Data Service) are not included here as that would violate the End User Licence of the UK Data Service. For ease of replication of scripts using FRS data, users are encouraged to acquire tab-delimited data from UK Data Service and include it in their project repo so that, within the data folder, there is a folder called 'frs-survey', within which, each financial year FRS folder is included in the form it was acquired from UK Data Service after unzipping. This stucture is represented below:
+
+```
+> economic_security
+--|--> data
+-------|--> frs-survey
+------------|--> FRS_2003-2004
+-----------------|--> UKDA-xxxx-tab
+------------|--> FRS_2004-2005
+-----------------|--> UKDA-xxxx-tab
+------------|--> etc.
+
+```
+
 A complete list of the data we used, along with links and persistent identifiers, can be found in the [`data-table.md`](/data-table.md) file.
 
 ## Folder structure
