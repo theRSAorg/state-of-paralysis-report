@@ -10,6 +10,7 @@
 # of the 'Young People's Future Health and Economic Security' report
 
 #### 1. Set-up ####
+rm(list = ls())
 # packages
 packages <- c("here", "readr", "purrr", "tidyr", "dplyr", "forcats", "stringr", "ggplot2")
 pkg_notinstall <- packages[!(packages %in% installed.packages()[, "Package"])]
@@ -44,23 +45,32 @@ rsa_extra_palette <- c(
 read_rename_hhagegr2 <- function(flnm) {
   read_tsv(flnm) %>%
     mutate(filename = flnm) %>%
+    # for index 1 of 2003-2008, PTENTYP2 is missing. need to investigate whether PTENTYPE can be used in its place (compare dictionaries)
     select(filename, id = SERNUM, age = HHAGEGR2, tenure = PTENTYP2)
 }
 
 read_rename <- function(flnm) {
   read_tsv(flnm) %>%
     mutate(filename = flnm) %>%
-    select(filename, id = SERNUM, age = HHAGEGR3, tenure = PTENTYP2)
+    # use contains because 2018-2019 uses lower case
+    select(filename, id = contains("sernum"), age = HHAGEGR3, tenure = PTENTYP2)
 }
 
 # NB: this data is not included in the repository, but is available through the UK Data Service
 # more information can be found in the README
+files <- list.files(
+  path = here("data", "frs-survey"),
+  pattern = "\\househol.tab$",
+  full.names = T,
+  recursive = T
+)
+
+# function for getting the first years
+files_2003_2008 <- files[which(sapply(files, function(x) if(sum(str_detect(x, as.character(c(2003:2008)))) > 1){1} else{0}) > 0)]
+files_2008_2022 <- files[which(sapply(files, function(x) if(sum(str_detect(x, as.character(c(2008:2022)))) > 1){1} else{0}) > 0)]
+
 tenure_data_2003_2008 <-
-  list.files(
-    path = here("data", "frs-survey", "2003-2008"),
-    pattern = "\\.tab$",
-    full.names = T
-  ) %>%
+  files_2003_2008 %>%
   map_df(~ read_rename_hhagegr2(.)) %>%
   mutate(
     age = as_factor(age),
@@ -81,11 +91,7 @@ tenure_data_2003_2008 <-
 
 # NB: as above, this data came from the UK Data Service and could not be included here
 tenure_data_2008_2022 <-
-  list.files(
-    path = here("data", "frs-survey", "2008-2022"),
-    pattern = "\\.tab$",
-    full.names = T
-  ) %>%
+  files_2008_2022 %>%
   map_df(~ read_rename(.)) %>%
   mutate(
     age = as_factor(age),
@@ -102,6 +108,11 @@ tenure_data_2008_2022 <-
     )
   )
 
+# N.B. readr throws problems for 2018-2019 with some rows for vars in cols 117 and 128.
+# It expects boolean but apparently finds floats. But subsetting to problem
+# cells simply yields NA. In fact, all values for these columns are NA for 2018-2019 
+# Since we're not interested in these columns we can continue.
+
 # combine the data
 tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 
@@ -112,7 +123,8 @@ tenure_data <- rbind(tenure_data_2003_2008, tenure_data_2008_2022)
 # the time range is included in the filename, 22 characters from the end
 tenure_data_factors <- tenure_data %>%
   mutate(
-    year = str_sub(filename, start = -22, end = -14),
+    year = str_sub(filename, start = str_locate(filename,"FRS_")[,2]+1, 
+                   end = str_locate(filename, "/UKDA")[,1]-1),
     year = as_factor(year),
     # HHAGEGR2 and HHAGEGR3 have different levels
     age = fct_collapse(age,
@@ -175,26 +187,27 @@ figure1_5 <- tenure_data_factors %>%
   summarise(n = n()) %>%
   mutate(
     percentage = 100 * (n / sum(n)),
+    # recode so that year is the year ending, i.e., 2003-2004 is financial year ending 2004
     year = fct_recode(year,
-      "2003" = "2003-2004",
-      "2004" = "2004-2005",
-      "2005" = "2005-2006",
-      "2006" = "2006-2007",
-      "2007" = "2007-2008",
-      "2008" = "2008-2009",
-      "2009" = "2009-2010",
-      "2010" = "2010-2011",
-      "2011" = "2011-2012",
-      "2012" = "2012-2013",
-      "2013" = "2013-2014",
-      "2014" = "2014-2015",
-      "2015" = "2015-2016",
-      "2016" = "2016-2017",
-      "2017" = "2017-2018",
-      "2018" = "2018-2019",
-      "2019" = "2019-2020",
-      "2020" = "2020-2021",
-      "2021" = "2021-2022"
+      "2004" = "2003-2004",
+      "2005" = "2004-2005",
+      "2006" = "2005-2006",
+      "2007" = "2006-2007",
+      "2008" = "2007-2008",
+      "2009" = "2008-2009",
+      "2010" = "2009-2010",
+      "2011" = "2010-2011",
+      "2012" = "2011-2012",
+      "2013" = "2012-2013",
+      "2014" = "2013-2014",
+      "2015" = "2014-2015",
+      "2016" = "2015-2016",
+      "2017" = "2016-2017",
+      "2018" = "2017-2018",
+      "2019" = "2018-2019",
+      "2020" = "2019-2020",
+      "2021" = "2020-2021",
+      "2022" = "2021-2022"
     )
   ) %>%
   ggplot(aes(x = year, y = percentage, colour = tenure, group = tenure)) +
@@ -202,8 +215,7 @@ figure1_5 <- tenure_data_factors %>%
   theme_bw() +
   scale_colour_manual(values = rsa_palette, name = "Tenure") +
   ylab("Percentage") +
-  xlab("")
-
+  xlab("Financial year ending")
 
 # fig 1.6
 
@@ -211,9 +223,9 @@ figure1_5 <- tenure_data_factors %>%
 # so data is read in and cleaned independently
 # like before, this data is not included in the repository
 # to comply with the UK Data Service End User Licence
-frs_2021_2022 <- read_tsv(here("data", "frs-survey", "2008-2022", "2021-2022_househol.tab"))
+frs_2021_2022 <- read_tsv(files_2008_2022[which(str_detect(files_2008_2022, "2021-2022"))])
 
-fig_1.6_data <- frs_2021_2022 %>%
+fig_1_6_data <- frs_2021_2022 %>%
   select(
     id = SERNUM,
     age = HHAGEGR3,
@@ -255,7 +267,7 @@ fig_1.6_data <- frs_2021_2022 %>%
     percentage = (housing_costs / income_num) * 100
   )
 
-fig1.6 <- fig_1.6_data %>%
+figure1_6 <- fig_1_6_data %>%
   group_by(age) %>%
   summarise(median_percentage = median(percentage, na.rm = TRUE)) %>%
   ggplot(aes(x = age, y = median_percentage)) +
@@ -267,6 +279,6 @@ fig1.6 <- fig_1.6_data %>%
   ) +
   theme_classic()
 
-# ggsave(filename = "./figures/figure1_4_housing_tenure_2021-22.png")
-# ggsave(filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
-# ggsave(filename = "./figures/figure1_6_housing-costs-income-percentage.png", width = 9, height = 3.62)
+# ggsave(figure1_4, filename = "./figures/figure1_4_housing_tenure_2021-22.png")
+# ggsave(figure1_5, filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
+# ggsave(figure1_6, filename = "./figures/figure1_6_housing-costs-income-percentage.png", width = 9, height = 3.62)
