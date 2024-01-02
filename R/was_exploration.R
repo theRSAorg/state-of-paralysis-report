@@ -19,7 +19,7 @@ lapply(packages, library, character.only = TRUE)
 # there is more information in the README file
 
 # 2016-2018 data (Round 6)
-data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
+data_1618 <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_6_hhold_eul_april_2022.tab")) %>%
   # variables were selected by examining the data dictionaries
   select(
     id = CASER6,
@@ -35,7 +35,7 @@ data_1618 <- read_tsv(here("data", "was_round_6_hhold_eul_april_2022.tab")) %>%
   mutate(year = "2016-2018")
 
 # 2018-2020 data (Round 7)
-data_1820 <- read_tsv(here("data", "was_round_7_hhold_eul_march_2022.tab")) %>%
+data_1820 <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_7_hhold_eul_march_2022.tab")) %>%
   select(
     id = CASER7,
     age = HRPDVAge8r7,
@@ -46,14 +46,14 @@ data_1820 <- read_tsv(here("data", "was_round_7_hhold_eul_march_2022.tab")) %>%
   mutate(year = "2018-2020")
 
 # person-level data
-data_1618_person <- read_tsv(here("data", "was_round_6_person_eul_april_2022.tab")) %>%
+data_1618_person <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_6_person_eul_april_2022.tab")) %>%
   select(
     id = CASER6,
     age = HRPDVAge8R6
   ) %>%
   mutate(year = "2016-2018")
 
-data_1820_person <- read_tsv(here("data", "was_round_7_person_eul_june_2022.tab")) %>%
+data_1820_person <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_7_person_eul_june_2022.tab")) %>%
   select(
     id = CASER7,
     age = HRPDVAge8r7
