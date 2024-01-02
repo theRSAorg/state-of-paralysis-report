@@ -99,8 +99,8 @@ all_pre_nlw_rates <- merge(pre_nlw_rates_long, pre_nlw_rates_prop_long, by = c("
     # then recode levels of age to show changes in groups
     Age = forcats::fct_recode(Age,
       `16 to 17` = "Age 16-17 Rate",
-      `18 to 21 (1999-2009); 18 to 20 (2010 on)` = "Youth Development Rate (Age 18-21)",
-      `'Main rate': \n22+ (1999-2009); 21+ (2010-2015)` = "Main Rate (Age 22+)"
+      `18 to 21 (1999-2009); \n18 to 20 (2010 on)` = "Youth Development Rate (Age 18-21)",
+      `'Main rate': \n22+ (1999-2009); \n21+ (2010-2015)` = "Main Rate (Age 22+)"
     )
   )
 
@@ -172,8 +172,8 @@ all_nlw_rates <- merge(nlw_rates_long, nlw_rates_prop_long, by = c("Year", "Age"
     # then recode levels of age to show changes in groups
     Age = forcats::fct_recode(Age,
       `16 to 17` = "Under 18",
-      `21 to 24 (2016-2020); 21 to 22 (2021 on)` = "21 to 24",
-      `National Living Wage: \n25+ (2016-2020); 23+ (2021 on)` = "25 and over"
+      `21 to 24 (2016-2020); \n21 to 22 (2021 on)` = "21 to 24",
+      `National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)` = "25 and over"
     )
   )
 
@@ -202,7 +202,7 @@ all_nlw_rates %>%
 all_nlw_rates_edit <- all_nlw_rates %>%
   mutate(
     Age = forcats::fct_recode(Age,
-      `18 to 21 (1999-2009); 18 to 20 (2010 on)` = "18 to 20"
+      `18 to 21 (1999-2009); \n18 to 20 (2010 on)` = "18 to 20"
     )
   )
 
@@ -212,19 +212,19 @@ all_wage_data <- rbind(all_pre_nlw_rates, all_nlw_rates_edit) %>%
       Age,
       "Apprentice",
       "16 to 17",
-      "18 to 21 (1999-2009); 18 to 20 (2010 on)",
-      "21 to 24 (2016-2020); 21 to 22 (2021 on)",
-      "'Main rate': \n22+ (1999-2009); 21+ (2010-2015)",
-      "National Living Wage: \n25+ (2016-2020); 23+ (2021 on)"
+      "18 to 21 (1999-2009); \n18 to 20 (2010 on)",
+      "21 to 24 (2016-2020); \n21 to 22 (2021 on)",
+      "'Main rate': \n22+ (1999-2009); \n21+ (2010-2015)",
+      "National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)"
     )
   )
 
 # define coords to be used for joining main rate lines
 line_coords <- data.frame(x = c(lubridate::ymd("2015-10-01"), lubridate::ymd("2016-04-01")),
                           y = c(all_wage_data$Wage[which(all_wage_data$Year == lubridate::ymd("2015-10-01")
-                                                         & all_wage_data$Age == "'Main rate': \n22+ (1999-2009); 21+ (2010-2015)")],
+                                                         & all_wage_data$Age == "'Main rate': \n22+ (1999-2009); \n21+ (2010-2015)")],
                                 all_wage_data$Wage[which(all_wage_data$Year == lubridate::ymd("2016-04-01")
-                                                         & all_wage_data$Age == "National Living Wage: \n25+ (2016-2020); 23+ (2021 on)")]))
+                                                         & all_wage_data$Age == "National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)")]))
 
 all_wage_data %>%
   # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
@@ -240,12 +240,15 @@ all_wage_data %>%
   geom_point() +
   geom_line() +
   theme_bw() +
+  # change legend text sizes and spacing between levels
+  theme(legend.title = element_text(size = 15),
+        legend.text = element_text(size = 13),
+        legend.key.size = unit(2,'cm')) + 
   # theme(panel.grid.minor = element_blank()) +
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(breaks = seq(3, 11, 1)) + # coord_cartesian(ylim = c(40,100)) +
   ylab("Wage (£)")
-
 
 # save plot
 ggsave(filename = "./figures/minimum_wage_1999-2023.png")
@@ -266,6 +269,10 @@ all_wage_data %>%
   geom_point() +
   geom_line() +
   theme_bw() +
+  # change legend text sizes and spacing between levels
+  theme(legend.title = element_text(size = 15),
+        legend.text = element_text(size = 13),
+        legend.key.size = unit(1.5,'cm')) + 
   # theme(panel.grid.minor = element_blank()) +
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
@@ -311,9 +318,9 @@ growth_table <- growth_table %>%
   )
 
 # save table in a word doc
-growth_table %>%
-  flextable::flextable() %>%
-  flextable::save_as_docx(path = "./tables/wage_growth_2016-2023.docx")
+# growth_table %>%
+#   flextable::flextable() %>%
+#   flextable::save_as_docx(path = "./tables/wage_growth_2016-2023.docx")
 
 # week's wages
 weeks_wages <- growth_table %>%
@@ -345,7 +352,7 @@ pre_nlw_rates <- pre_nlw_rates %>%
 
 # save to csv and do table manually
 # ideally should do table programmatically
-readr::write_csv(pre_nlw_rates, file = "./data/wage_proportions_1999-2016.csv")
+# readr::write_csv(pre_nlw_rates, file = "./data/wage_proportions_1999-2016.csv")
 
 nlw_rates <- table_2[-which(table_2$Year == "Year"), ]
 
@@ -356,4 +363,4 @@ nlw_rates <- nlw_rates %>%
   mutate(across(.col = 2:ncol(nlw_rates), list(wage_proportion = function(x) 100 * (x / `25 and over`)))) %>%
   mutate(across(contains("proportion"), function(x) round(x, 2)))
 
-readr::write_csv(nlw_rates, file = "./data/wage_proportions_1999-2016.csv")
+# readr::write_csv(nlw_rates, file = "./data/wage_proportions_1999-2016.csv")
