@@ -36,7 +36,7 @@ A complete list of the data we used, along with links and persistent identifiers
 
 ### Restricted data
 
-To get **Wealth and Assets Survey data**:
+To get **Family Resources Survey data**:
 1. Download the `TAB` folder specified in the [`data-table.md`](/data-table.md) file from the UK Data Service.
 2. Extract the downloaded `.zip` folder.
 3. Rename the extracted folder from the long alphanumeric string to FRS_20xx-20xx (e.g. `FRS_2003-2004`).
@@ -44,7 +44,7 @@ To get **Wealth and Assets Survey data**:
 5. Create a folder called `frs-survey` and place it within the existing `data` folder.
 6. Move all renamed folders into the `frs-survey` folder.
 
-To get **Family Resources Survey data**:
+To get **Wealth and Assets Survey data**:
 1. Download the `TAB` folders for the years listed in the [`data-table.md`](/data-table.md) file from the UK Data Service.
 2. Extract the downloaded `.zip` folder.
 3. Copy the folder named `UKDA-7215-tab` into the existing `data` folder.
