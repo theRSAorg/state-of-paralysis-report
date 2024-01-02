@@ -1,14 +1,19 @@
+# exploration of the Annual Survey for Households and Earnings, 2008 and 2023
+# author: Eirini Zormpa
+# date: December 2023
+
+# install and load packages
+
+# install packages if you don't have them already
+# install.packages("here")
+# install.packages("readxl")
+# install.packages("tidyr")
+# install.packages("dplyr")
+
 library(here)
 library(readxl)
 library(tidyr)
 library(dplyr)
-
-ashe_wide <- ashe %>% 
-  pivot_wider(names_from = year,
-              values_from = median_wage,
-              names_prefix = "median_wage_") %>% 
-  mutate(growth_rate = (median_wage_2023-median_wage_2008)/median_wage_2008,
-         percentage = growth_rate*100)
 
 # unzip files for 2008 and 2023
 unzip(zipfile = here("data", "2008-table-6.zip"),
@@ -44,11 +49,14 @@ median_wage_2008_18_21 <- ashe_2008[[2,"median_wage"]]
 median_wage_2023_all <- ashe_2023[[1,"median_wage"]]
 median_wage_2023_18_21 <- ashe_2023[[2,"median_wage"]]
 
+# calculate growth rates
 growth_rate_all <- (median_wage_2023_all-median_wage_2008_all)/median_wage_2008_all
 percentage_all <- growth_rate_all*100
 
 growth_rate_18_21 <- (median_wage_2023_18_21-median_wage_2008_18_21)/median_wage_2008_18_21
 percentage_18_21 <- growth_rate_18_21*100
 
+# explore the hypothetical of how much 18-21 year olds would be making
+# if their wages had increased in line with all employees
 hypothetical <- median_wage_2008_18_21 + (median_wage_2008_18_21*growth_rate_all)
 difference <- hypothetical - median_wage_2023_18_21
