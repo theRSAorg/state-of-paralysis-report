@@ -4,9 +4,9 @@
 # December 2023
 
 # FRS data is used in:
-# figure 1.4 (housing tenure by age group),
-# figure 1.5 (housing tenure among 16-24 year olds, 2003-2021), and
-# figure 1.6 (median percentage of income spent on housing by age group)
+# figure 1.5 (housing tenure by age group),
+# figure 1.6 (housing tenure among 16-24 year olds, 2003-2021), and
+# figure 1.7 (median percentage of income spent on housing by age group)
 # of the 'Young People's Future Health and Economic Security' report
 
 #### 1. Set-up ####

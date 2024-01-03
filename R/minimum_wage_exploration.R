@@ -5,6 +5,7 @@
 # Scrapes data from https://www.nibusinessinfo.co.uk/content/national-minimum-wage-previous-rates 
 # (which is validated against a government source: https://researchbriefings.files.parliament.uk/documents/CBP-7735/CBP-7735.pdf)
 # to explore trends in minimum wage provision from 1999 to 2023.
+# Creates figures 1.2 and 1.3 of the report, as well as table 1.1
 
 rm(list = ls()) # clear the workspace
 
