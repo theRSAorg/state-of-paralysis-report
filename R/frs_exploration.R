@@ -12,10 +12,16 @@
 #### 1. Set-up ####
 rm(list = ls())
 # packages
-packages <- c("here", "readr", "purrr", "tidyr", "dplyr", "forcats", "stringr", "ggplot2")
+packages <- c("here", "readr", "purrr", "tidyr", "dplyr", "forcats", "stringr", "extrafont", "ggplot2")
 pkg_notinstall <- packages[!(packages %in% installed.packages()[, "Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
+
+# if you have never used the extrafont package before
+# you will need to import the fonts first
+# this could take a few minutes, depending on how many you have installed
+
+# font_import()
 
 # palettes
 rsa_palette <- c(
@@ -65,7 +71,7 @@ files <- list.files(
   recursive = T
 )
 
-# function for getting the first years
+# read in data
 files_2003_2008 <- files[which(sapply(files, function(x) if(sum(str_detect(x, as.character(c(2003:2008)))) > 1){1} else{0}) > 0)]
 files_2008_2022 <- files[which(sapply(files, function(x) if(sum(str_detect(x, as.character(c(2008:2022)))) > 1){1} else{0}) > 0)]
 
@@ -178,7 +184,8 @@ figure1_4 <- tenure_data_factors %>%
   theme_bw() +
   scale_fill_manual(values = rsa_palette, name = "Tenure") +
   ylab("Percentage") +
-  xlab("Age group")
+  xlab("Age group") +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # figure 1.5
 figure1_5 <- tenure_data_factors %>%
@@ -212,10 +219,12 @@ figure1_5 <- tenure_data_factors %>%
   ) %>%
   ggplot(aes(x = year, y = percentage, colour = tenure, group = tenure)) +
   geom_line() +
+  geom_point() +
   theme_bw() +
   scale_colour_manual(values = rsa_palette, name = "Tenure") +
   ylab("Percentage") +
-  xlab("Financial year ending")
+  xlab("Financial year ending") +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # fig 1.6
 
@@ -277,7 +286,8 @@ figure1_6 <- fig_1_6_data %>%
     x = "Age",
     y = "Median percentage"
   ) +
-  theme_classic()
+  theme_bw() +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # ggsave(figure1_4, filename = "./figures/figure1_4_housing_tenure_2021-22.png")
 # ggsave(figure1_5, filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
