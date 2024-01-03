@@ -173,8 +173,8 @@ tenure_data_factors <- tenure_data %>%
 
 #### 4. Visualise data ####
 
-# figure 1.4
-figure1_4 <- tenure_data_factors %>%
+# figure 1.5
+figure1_5 <- tenure_data_factors %>%
   filter(year == "2021-2022") %>%
   group_by(age, tenure) %>%
   summarise(n = n()) %>%
@@ -187,8 +187,8 @@ figure1_4 <- tenure_data_factors %>%
   xlab("Age group") +
   theme(text = element_text(family="Gill Sans MT"))
 
-# figure 1.5
-figure1_5 <- tenure_data_factors %>%
+# figure 1.6
+figure1_6 <- tenure_data_factors %>%
   filter(age == "16-24") %>%
   group_by(year, tenure) %>%
   summarise(n = n()) %>%
@@ -226,7 +226,7 @@ figure1_5 <- tenure_data_factors %>%
   xlab("Financial year ending") +
   theme(text = element_text(family="Gill Sans MT"))
 
-# fig 1.6
+# fig 1.7
 
 # this figure requires more variables than the previous plots
 # so data is read in and cleaned independently
@@ -234,7 +234,7 @@ figure1_5 <- tenure_data_factors %>%
 # to comply with the UK Data Service End User Licence
 frs_2021_2022 <- read_tsv(files_2008_2022[which(str_detect(files_2008_2022, "2021-2022"))])
 
-fig_1_6_data <- frs_2021_2022 %>%
+fig_1_7_data <- frs_2021_2022 %>%
   select(
     id = SERNUM,
     age = HHAGEGR3,
@@ -276,7 +276,7 @@ fig_1_6_data <- frs_2021_2022 %>%
     percentage = (housing_costs / income_num) * 100
   )
 
-figure1_6 <- fig_1_6_data %>%
+figure1_7 <- fig_1_7_data %>%
   group_by(age) %>%
   summarise(median_percentage = median(percentage, na.rm = TRUE)) %>%
   ggplot(aes(x = age, y = median_percentage)) +
@@ -289,6 +289,6 @@ figure1_6 <- fig_1_6_data %>%
   theme_bw() +
   theme(text = element_text(family="Gill Sans MT"))
 
-# ggsave(figure1_4, filename = "./figures/figure1_4_housing_tenure_2021-22.png")
-# ggsave(figure1_5, filename = "./figures/figure1_5_housing_tenure.png", width = 9, height = 3.62)
-# ggsave(figure1_6, filename = "./figures/figure1_6_housing-costs-income-percentage.png", width = 9, height = 3.62)
+# ggsave(figure1_5, filename = "./figures/1.5_housing_tenure_2021-22.png")
+# ggsave(figure1_6, filename = "./figures/1.6_housing_tenure.png", width = 9, height = 3.62)
+# ggsave(figure1_7, filename = "./figures/1.7_housing-costs-income-percentage.png", width = 9, height = 3.62)

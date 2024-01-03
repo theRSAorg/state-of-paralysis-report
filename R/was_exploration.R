@@ -167,4 +167,4 @@ fin_liab_to_income_ratio_dotplot <- data_1620 %>%
     text = element_text(family="Gill Sans MT")
   )
 
-# ggsave(here("figures", "1.3_financial_liability_income_ratio_dotplot.png"), fin_liab_to_income_ratio_dotplot)
+# ggsave(here("figures", "1.4_financial_liability_income_ratio_dotplot.png"), fin_liab_to_income_ratio_dotplot)

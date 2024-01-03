@@ -259,7 +259,7 @@ all_wage_data %>%
   theme(text = element_text(family="Gill Sans MT"))
 
 # save plot
-# ggsave(filename = "./figures/minimum_wage_1999-2023.png", width = 12, height = 7)
+# ggsave(filename = "./figures/1.2_minimum_wage_1999-2023.png", width = 12, height = 7)
 
 all_wage_data %>%
   filter(
@@ -297,7 +297,7 @@ all_wage_data %>%
   theme(text = element_text(family="Gill Sans MT"))
 
 # save plot
-# ggsave(filename = "./figures/minimum_wage_proportion_1999-2023.png", width = 12, height = 7)
+# ggsave(filename = "./figures/1.3_minimum_wage_proportion_1999-2023.png", width = 12, height = 7)
 
 ################################################################################
 
