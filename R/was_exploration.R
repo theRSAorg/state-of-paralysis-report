@@ -4,10 +4,16 @@
 # December 2023
 
 #### 1. Load packages ####
-packages <- c("here", "readr", "magrittr", "tidyr", "dplyr", "ggplot2", "forcats", "GGally")
+packages <- c("here", "extrafont", "readr", "magrittr", "tidyr", "dplyr", "ggplot2", "forcats", "GGally")
 pkg_notinstall <- packages[!(packages %in% installed.packages()[, "Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
+
+# if you have never used the extrafont package before
+# you will need to import the fonts first
+# this could take a few minutes, depending on how many you have installed
+
+# font_import()
 
 #### 2. Read in data ####
 
@@ -157,7 +163,8 @@ fin_liab_to_income_ratio_dotplot <- data_1620 %>%
   ) +
   theme(
     legend.position = "bottom",
-    panel.border = element_blank()
+    panel.border = element_blank(),
+    text = element_text(family="Gill Sans MT")
   )
 
 # ggsave(here("figures", "1.3_financial_liability_income_ratio_dotplot.png"), fin_liab_to_income_ratio_dotplot)

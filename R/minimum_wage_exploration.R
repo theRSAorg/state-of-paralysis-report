@@ -9,10 +9,16 @@
 rm(list = ls()) # clear the workspace
 
 # Packages
-packages <- c("rvest", "dplyr", "tibble", "tidyr", "ggplot2", "lubridate", "readr", "stringr", "knitr", "kableExtra", "apaTables")
+packages <- c("rvest", "dplyr", "tibble", "tidyr", "extrafont", "ggplot2", "lubridate", "readr", "stringr", "knitr", "kableExtra", "apaTables")
 pkg_notinstall <- packages[!(packages %in% installed.packages()[, "Package"])]
 lapply(pkg_notinstall, install.packages, dependencies = TRUE)
 lapply(packages, library, character.only = TRUE)
+
+# if you have never used the extrafont package before
+# you will need to import the fonts first
+# this could take a few minutes, depending on how many you have installed
+
+# font_import()
 
 rsa_palette <- c(
   "#03ECDD",
@@ -188,7 +194,8 @@ all_nlw_rates %>%
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(breaks = seq(40, 100, 10)) +
   coord_cartesian(ylim = c(40, 100)) +
-  ylab("Proprorion of adult rate (%)")
+  ylab("Proprorion of adult rate (%)") +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # Save plot
 # ggsave(filename = "./figures/minimum_Wage_2016-2023.png")
@@ -248,10 +255,11 @@ all_wage_data %>%
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(breaks = seq(3, 11, 1)) + # coord_cartesian(ylim = c(40,100)) +
-  ylab("Wage (£)")
+  ylab("Wage (£)") +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # save plot
-ggsave(filename = "./figures/minimum_wage_1999-2023.png")
+# ggsave(filename = "./figures/minimum_wage_1999-2023.png", width = 12, height = 7)
 
 all_wage_data %>%
   filter(
@@ -262,7 +270,8 @@ all_wage_data %>%
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") +
-  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 'Main rate' (22+)") +
+  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 'Main rate' (22+)"
+           ) +
   annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = \n'Main rate' (21+)") +
   annotate(geom = "text", x = lubridate::ymd("2016-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (25+)") +
   annotate(geom = "text", x = lubridate::ymd("2021-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (23+)") +
@@ -284,10 +293,11 @@ all_wage_data %>%
       lubridate::ymd("2024-01-01")
     )
   ) +
-  ylab("Proprorion of adult rate (%)")
+  ylab("Proprorion of adult rate (%)") +
+  theme(text = element_text(family="Gill Sans MT"))
 
 # save plot
-ggsave(filename = "./figures/minimum_wage_proportion_1999-2023.png")
+# ggsave(filename = "./figures/minimum_wage_proportion_1999-2023.png", width = 12, height = 7)
 
 ################################################################################
 
