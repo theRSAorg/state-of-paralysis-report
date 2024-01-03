@@ -149,7 +149,7 @@ fin_liab_to_income_ratio_dotplot <- data_1620 %>%
     x = "Age",
     y = "Mean ratio of financial liabilities to income"
   ) +
-  theme_classic() +
+  theme_bw() +
   scale_colour_manual(
     values = c("#000C7860", "#FFA72F60"),
     guide = guide_legend(),
