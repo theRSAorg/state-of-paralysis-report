@@ -235,6 +235,10 @@ line_coords <- data.frame(x = c(lubridate::ymd("2015-10-01"), lubridate::ymd("20
                                                          & all_wage_data$Age == "National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)")]))
 
 all_wage_data %>%
+  mutate(Age = forcats::fct_recode(Age,
+                                   "16-17" = "16 to 17",
+                                   "18-21 (1999-2009); \n18-20 (2010 on)" = "18 to 21 (1999-2009); \n18 to 20 (2010 on)",
+                                   "21-24 (2016-2020); \n21-22 (2021 on)"= "21-24 (2016-2020); \n21-22 (2021 on)")) %>% 
   # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, Wage, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
@@ -266,7 +270,11 @@ all_wage_data %>%
   filter(
     !(stringr::str_detect(Age, "^National")) &
       !(stringr::str_detect(Age, "^'Main"))
-  ) %>% # don't show 25 group
+  ) %>% 
+  mutate(Age = forcats::fct_recode(Age,
+                                   "16-17" = "16 to 17",
+                                   "18-21 (1999-2009); \n18-20 (2010 on)" = "18 to 21 (1999-2009); \n18 to 20 (2010 on)",
+                                   "21-24 (2016-2020); \n21-22 (2021 on)"= "21-24 (2016-2020); \n21-22 (2021 on)")) %>%
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
@@ -291,7 +299,7 @@ all_wage_data %>%
     ylim = c(40, 105),
     xlim = c(
       lubridate::ymd("1999-01-01"),
-      lubridate::ymd("2024-01-01")
+      lubridate::ymd("2023-04-01")
     )
   ) +
   ylab("Proprorion of adult rate (%)") +
