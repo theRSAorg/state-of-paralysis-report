@@ -38,7 +38,7 @@ data_1618 <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_6_hhold_eu
     fin_liab_to_income_ratio = HHdebtIncRatr6,
     YearR6
   ) %>%
-  mutate(year = "2016-2018")
+  mutate(year = "2016-18")
 
 # 2018-2020 data (Round 7)
 data_1820 <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_7_hhold_eul_march_2022.tab")) %>%
@@ -49,7 +49,7 @@ data_1820 <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_7_hhold_eu
     fin_liab_to_income_ratio = HHdebtIncRatr7,
     yearr7
   ) %>%
-  mutate(year = "2018-2020")
+  mutate(year = "2018-20")
 
 # person-level data
 data_1618_person <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_6_person_eul_april_2022.tab")) %>%
@@ -57,14 +57,14 @@ data_1618_person <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_6_p
     id = CASER6,
     age = HRPDVAge8R6
   ) %>%
-  mutate(year = "2016-2018")
+  mutate(year = "2016-18")
 
 data_1820_person <- read_tsv(here("data", "UKDA-7215-tab", "tab", "was_round_7_person_eul_june_2022.tab")) %>%
   select(
     id = CASER7,
     age = HRPDVAge8r7
   ) %>%
-  mutate(year = "2018-2020")
+  mutate(year = "2018-20")
 
 #### 3. Sanity checks ####
 
@@ -115,7 +115,7 @@ data_1620 %>%
   summarise(mean_credit_debt = mean(credit_debt)) %>%
   ungroup() %>%
   mutate(debt_change = lead(mean_credit_debt) / mean_credit_debt) %>%
-  filter(year == "2016-2018") %>%
+  filter(year == "2016-18") %>%
   select(age, debt_change)
 
 # see how many observations come from each group
@@ -143,12 +143,12 @@ fin_liab_to_income_ratio_dotplot <- data_1620 %>%
   summarise(mean_fin_liab_to_income_ratio = mean(fin_liab_to_income_ratio, na.rm = T)) %>%
   ungroup() %>%
   mutate(mean_fin_liab_to_income_ratio_2020 = lead(mean_fin_liab_to_income_ratio)) %>%
-  filter(year == "2016-2018") %>%
+  filter(year == "2016-18") %>%
   drop_na(age) %>%
   ggplot() +
   geom_segment(aes(x = age, xend = age, y = mean_fin_liab_to_income_ratio, yend = mean_fin_liab_to_income_ratio_2020), colour = "grey") +
-  geom_point(aes(x = age, y = mean_fin_liab_to_income_ratio, colour = "2016-2018"), size = 3) +
-  geom_point(aes(x = age, y = mean_fin_liab_to_income_ratio_2020, colour = "2018-2020"), size = 3) +
+  geom_point(aes(x = age, y = mean_fin_liab_to_income_ratio, colour = "2016-18"), size = 3) +
+  geom_point(aes(x = age, y = mean_fin_liab_to_income_ratio_2020, colour = "2018-20"), size = 3) +
   scale_y_continuous(n.breaks = 8) +
   coord_flip() +
   labs(

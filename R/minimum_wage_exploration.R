@@ -238,7 +238,9 @@ all_wage_data %>%
   mutate(Age = forcats::fct_recode(Age,
                                    "16-17" = "16 to 17",
                                    "18-21 (1999-2009); \n18-20 (2010 on)" = "18 to 21 (1999-2009); \n18 to 20 (2010 on)",
-                                   "21-24 (2016-2020); \n21-22 (2021 on)"= "21-24 (2016-2020); \n21-22 (2021 on)")) %>% 
+                                   "21-24 (2016-20); \n21-22 (2021 on)" = "21 to 24 (2016-2020); \n21 to 22 (2021 on)",
+                                   "'Main rate': \n22+ (1999-2009); \n21+ (2010-15)"= "'Main rate': \n22+ (1999-2009); \n21+ (2010-2015)",
+                                   "National Living Wage: \n25+ (2016-20); \n23+ (2021 on)" = "National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)")) %>% 
   # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, Wage, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
@@ -274,7 +276,7 @@ all_wage_data %>%
   mutate(Age = forcats::fct_recode(Age,
                                    "16-17" = "16 to 17",
                                    "18-21 (1999-2009); \n18-20 (2010 on)" = "18 to 21 (1999-2009); \n18 to 20 (2010 on)",
-                                   "21-24 (2016-2020); \n21-22 (2021 on)"= "21-24 (2016-2020); \n21-22 (2021 on)")) %>%
+                                   "21-24 (2016-20); \n21-22 (2021 on)"= "21 to 24 (2016-2020); \n21 to 22 (2021 on)")) %>%
   ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
