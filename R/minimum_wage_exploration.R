@@ -281,11 +281,10 @@ all_wage_data %>%
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") +
-  annotate(geom = "text", x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 'Main rate' (22+)"
-           ) +
-  annotate(geom = "text", x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = \n'Main rate' (21+)") +
-  annotate(geom = "text", x = lubridate::ymd("2016-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (25+)") +
-  annotate(geom = "text", x = lubridate::ymd("2021-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (23+)") +
+  geom_text(x = lubridate::ymd("1999-01-01"), y = 105, hjust = 0, label = "Adult group = 'Main rate' (22+)", family = "Gill Sans MT", show.legend = FALSE) +
+  geom_text(x = lubridate::ymd("2011-01-01"), y = 105, hjust = 0, label = "Adult group = \n'Main rate' (21+)", family = "Gill Sans MT", show.legend = FALSE) +
+  geom_text(x = lubridate::ymd("2016-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (25+)", family = "Gill Sans MT", show.legend = FALSE) +
+  geom_text(x = lubridate::ymd("2021-06-01"), y = 105, hjust = 0, label = "Adult group = \nNLW (23+)", family = "Gill Sans MT", show.legend = FALSE) +
   geom_point() +
   geom_line() +
   theme_bw() +
