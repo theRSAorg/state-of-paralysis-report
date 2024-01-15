@@ -17,6 +17,42 @@
         "doc",
         "code"
       ]
+    },
+    {
+      "login": "JolyonJoseph",
+      "name": "Jolyon Miles-Wilson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86312793?v=4",
+      "profile": "https://github.com/JolyonJoseph",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "CellyRanks",
+      "name": "Celestin Okoroji",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46204033?v=4",
+      "profile": "https://github.com/CellyRanks",
+      "contributions": [
+        "userTesting"
+      ]
+    },
+    {
+      "login": "AwayFromTheMountains",
+      "name": "Oliver",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56560797?v=4",
+      "profile": "https://github.com/AwayFromTheMountains",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kim-bohling",
+      "name": "kim-bohling",
+      "avatar_url": "https://avatars.githubusercontent.com/u/153218194?v=4",
+      "profile": "https://github.com/kim-bohling",
+      "contributions": [
+        "ideas"
+      ]
     }
   ]
 }
