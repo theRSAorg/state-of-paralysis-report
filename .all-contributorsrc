@@ -1,4 +1,21 @@
 {
-  "projectName": "<insert the repo's name>",
-  "projectOwner": "<insert the repo's owner/orgs>"
+  "projectName": "economic_security",
+  "projectOwner": "theRSAorg",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "eirini-zormpa",
+      "name": "Eirini Zormpa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30151074?v=4",
+      "profile": "https://github.com/eirini-zormpa",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ]
 }
