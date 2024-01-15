@@ -34,6 +34,15 @@
       "contributions": [
         "userTesting"
       ]
+    },
+    {
+      "login": "AwayFromTheMountains",
+      "name": "Oliver",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56560797?v=4",
+      "profile": "https://github.com/AwayFromTheMountains",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
