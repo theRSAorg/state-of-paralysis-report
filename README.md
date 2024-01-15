@@ -1,3 +1,4 @@
+[![All Contributors](https://img.shields.io/github/all-contributors/theRSAorg/economic_security?color=ee8449&style=flat-square)](#contributors)
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 # About
