@@ -1,5 +1,5 @@
-[![All Contributors](https://img.shields.io/github/all-contributors/projectOwner/projectName?color=ee8449&style=flat-square)](#contributors)
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+
 # About
 This repository contains data and code to recreate figures and tables used in the RSA's Young People's Future Health & Economic Security report.
 
