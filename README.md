@@ -1,4 +1,4 @@
-[![All Contributors](https://img.shields.io/github/all-contributors/theRSAorg/economic_security?color=ee8449&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-blue.svg?style=flat-square)](#contributors)
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 # About
@@ -76,8 +76,12 @@ In the end, you should have something like this:
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirini-zormpa"><img src="https://avatars.githubusercontent.com/u/30151074?v=4?s=100" width="100px;" alt="Eirini Zormpa"/><br /><sub><b>Eirini Zormpa</b></sub></a><br /><a href="#doc-eirini-zormpa" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/JolyonJoseph"><img src="https://avatars.githubusercontent.com/u/86312793?v=4?s=100" width="100px;" alt="Jolyon Miles-Wilson"/><br /><sub><b>Jolyon Miles-Wilson</b></sub></a><br /><a href="#code-JolyonJoseph" title="Code">💻</a> <a href="#doc-JolyonJoseph" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirini-zormpa"><img src="https://avatars.githubusercontent.com/u/30151074?v=4?s=100" width="100px;" alt="Eirini Zormpa"/><br /><sub><b>Eirini Zormpa</b></sub></a><br /><a href="#doc-eirini-zormpa" title="Documentation">📖</a> <a href="#code-eirini-zormpa" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JolyonJoseph"><img src="https://avatars.githubusercontent.com/u/86312793?v=4?s=100" width="100px;" alt="Jolyon Miles-Wilson"/><br /><sub><b>Jolyon Miles-Wilson</b></sub></a><br /><a href="#code-JolyonJoseph" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/CellyRanks"><img src="https://avatars.githubusercontent.com/u/46204033?v=4?s=100" width="100px;" alt="Celestin Okoroji"/><br /><sub><b>Celestin Okoroji</b></sub></a><br /><a href="#userTesting-CellyRanks" title="User Testing">📓</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/AwayFromTheMountains"><img src="https://avatars.githubusercontent.com/u/56560797?v=4?s=100" width="100px;" alt="Oliver"/><br /><sub><b>Oliver</b></sub></a><br /><a href="#code-AwayFromTheMountains" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kim-bohling"><img src="https://avatars.githubusercontent.com/u/153218194?v=4?s=100" width="100px;" alt="kim-bohling"/><br /><sub><b>kim-bohling</b></sub></a><br /><a href="#ideas-kim-bohling" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
