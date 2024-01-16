@@ -77,7 +77,7 @@ In the end, you should have something like this:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirini-zormpa"><img src="https://avatars.githubusercontent.com/u/30151074?v=4?s=100" width="100px;" alt="Eirini Zormpa"/><br /><sub><b>Eirini Zormpa</b></sub></a><br /><a href="#doc-eirini-zormpa" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JolyonJoseph"><img src="https://avatars.githubusercontent.com/u/86312793?v=4?s=100" width="100px;" alt="Jolyon Miles-Wilson"/><br /><sub><b>Jolyon Miles-Wilson</b></sub></a><br /><a href="#code-JolyonJoseph" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JolyonJoseph"><img src="https://avatars.githubusercontent.com/u/86312793?v=4?s=100" width="100px;" alt="Jolyon Miles-Wilson"/><br /><sub><b>Jolyon Miles-Wilson</b></sub></a><br /><a href="#code-JolyonJoseph" title="Code">💻</a> <a href="#doc-JolyonJoseph" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
