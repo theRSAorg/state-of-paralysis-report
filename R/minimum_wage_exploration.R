@@ -111,23 +111,6 @@ all_pre_nlw_rates <- merge(pre_nlw_rates_long, pre_nlw_rates_prop_long, by = c("
     )
   )
 
-all_pre_nlw_rates %>%
-  # subset(!stringr::str_detect(Age, "22")) %>%
-  ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
-  geom_point() +
-  geom_line() +
-  theme_bw() +
-  # theme(panel.grid.minor = element_blank()) +
-  scale_colour_manual(values = rsa_palette, name = "Age group") +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  scale_y_continuous(breaks = seq(40, 100, 10)) +
-  coord_cartesian(ylim = c(40, 100)) +
-  ylab("Proportion of adult rate (%)")
-
-# save plot
-# ggsave(filename = "./figures/minimum_Wage_1999-2016.png")
-
-################################################################################
 
 
 ################################################################################
@@ -184,24 +167,6 @@ all_nlw_rates <- merge(nlw_rates_long, nlw_rates_prop_long, by = c("Year", "Age"
     )
   )
 
-all_nlw_rates %>%
-  # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
-  ggplot2::ggplot(., aes(Year, `Wage proportion`, colour = Age)) +
-  geom_point() +
-  geom_line() +
-  theme_bw() +
-  # theme(panel.grid.minor = element_blank()) +
-  scale_colour_manual(values = rsa_palette, name = "Age group") +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  scale_y_continuous(breaks = seq(40, 100, 10)) +
-  coord_cartesian(ylim = c(40, 100)) +
-  ylab("Proprorion of adult rate (%)") +
-  theme(text = element_text(family="Gill Sans MT"))
-
-# Save plot
-# ggsave(filename = "./figures/minimum_Wage_2016-2023.png")
-
-################################################################################
 
 ################################################################################
 ######### Combine all wage data ################################################
@@ -241,14 +206,12 @@ all_wage_data %>%
                                    "21-24 (2016-20); \n21-22 (2021 on)" = "21 to 24 (2016-2020); \n21 to 22 (2021 on)",
                                    "'Main rate': \n22+ (1999-2009); \n21+ (2010-15)"= "'Main rate': \n22+ (1999-2009); \n21+ (2010-2015)",
                                    "National Living Wage: \n25+ (2016-20); \n23+ (2021 on)" = "National Living Wage: \n25+ (2016-2020); \n23+ (2021 on)")) %>% 
-  # subset(!stringr::str_detect(Age, "25")) %>% # don't show 25 group
   ggplot2::ggplot(., aes(Year, Wage, colour = Age)) +
   geom_vline(xintercept = lubridate::ymd("2010-10-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2016-04-01"), linetype = "dashed") +
   geom_vline(xintercept = lubridate::ymd("2021-04-01"), linetype = "dashed") +
   geom_segment(aes(x = line_coords$x[1], xend = line_coords$x[2],
                    y = line_coords$y[1], yend = line_coords$y[2]), 
-               #linetype = "dotted",
                lty = "11",
                size = 0.5) +
   geom_point() +
@@ -258,10 +221,9 @@ all_wage_data %>%
   theme(legend.title = element_text(size = 15),
         legend.text = element_text(size = 13),
         legend.key.size = unit(2,'cm')) + 
-  # theme(panel.grid.minor = element_blank()) +
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
-  scale_y_continuous(breaks = seq(3, 11, 1)) + # coord_cartesian(ylim = c(40,100)) +
+  scale_y_continuous(breaks = seq(3, 11, 1)) + 
   ylab("Wage (£)") +
   theme(text = element_text(family="Gill Sans MT"))
 
@@ -292,7 +254,6 @@ all_wage_data %>%
   theme(legend.title = element_text(size = 15),
         legend.text = element_text(size = 13),
         legend.key.size = unit(1.5,'cm')) + 
-  # theme(panel.grid.minor = element_blank()) +
   scale_colour_manual(values = rsa_palette, name = "Age group") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(breaks = seq(40, 100, 10)) +

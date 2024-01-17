@@ -6,7 +6,6 @@
 # FRS data is used in:
 # figure 1.5 (housing tenure by age group),
 # figure 1.6 (housing tenure among 16-24 year olds, 2003-2021), and
-# figure 1.7 (median percentage of income spent on housing by age group)
 # of the 'Young People's Future Health and Economic Security' report
 
 #### 1. Set-up ####
@@ -226,69 +225,5 @@ figure1_6 <- tenure_data_factors %>%
   xlab("Financial year ending") +
   theme(text = element_text(family="Gill Sans MT"))
 
-# fig 1.7
-
-# this figure requires more variables than the previous plots
-# so data is read in and cleaned independently
-# like before, this data is not included in the repository
-# to comply with the UK Data Service End User Licence
-frs_2021_2022 <- read_tsv(files_2008_2022[which(str_detect(files_2008_2022, "2021-2022"))])
-
-fig_1_7_data <- frs_2021_2022 %>%
-  select(
-    id = SERNUM,
-    age = HHAGEGR3,
-    income_num = HHINC,
-    income_band = HHINCBND,
-    housing_costs_gb = GBHSCOST,
-    housing_costs_ni = NIHSCOST
-  ) %>%
-  mutate(
-    age = fct_recode(as_factor(age),
-      "16-24" = "1",
-      "25-34" = "2",
-      "35-44" = "3",
-      "45-54" = "4",
-      "55-59" = "5",
-      "60-64" = "6",
-      "65-74" = "7",
-      "75+" = "8"
-    ),
-    income_band = fct_recode(as_factor(income_band),
-      "Under £200 a week" = "1",
-      "£200 and less than £400" = "2",
-      "£400 and less than £600" = "3",
-      "£600 and less than £800" = "4",
-      "£800 and less than £1000" = "5",
-      "£1000 and less than £1200" = "6",
-      "£1200 and less than £1400" = "7",
-      "£1400 and less than £1600" = "8",
-      "£1600 and less than £1800" = "9",
-      "£1800 and less than £2000" = "10",
-      "Above £2000" = "11"
-    ),
-    housing_costs_gb = na_if(housing_costs_gb, -1),
-    housing_costs_ni = na_if(housing_costs_ni, -1)
-  ) %>%
-  unite("housing_costs", housing_costs_gb:housing_costs_ni, na.rm = TRUE) %>%
-  mutate(
-    housing_costs = as.numeric(housing_costs),
-    percentage = (housing_costs / income_num) * 100
-  )
-
-figure1_7 <- fig_1_7_data %>%
-  group_by(age) %>%
-  summarise(median_percentage = median(percentage, na.rm = TRUE)) %>%
-  ggplot(aes(x = age, y = median_percentage)) +
-  geom_col(fill = "#000C78") +
-  scale_y_continuous(n.breaks = 10) +
-  labs(
-    x = "Age",
-    y = "Median percentage"
-  ) +
-  theme_bw() +
-  theme(text = element_text(family="Gill Sans MT"))
-
 # ggsave(figure1_5, filename = "./figures/1.5_housing_tenure_2021-22.png")
 # ggsave(figure1_6, filename = "./figures/1.6_housing_tenure.png", width = 9, height = 3.62)
-# ggsave(figure1_7, filename = "./figures/1.7_housing-costs-income-percentage.png", width = 9, height = 3.62)
