@@ -7,6 +7,7 @@ This repository contains data and code to recreate figures and tables used in th
 The data included in the `data` folder come from the Office for National Statistics (ONS), specifically from the [Annual Survey for Hours and Earning](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/allemployeesashetable1) and from the [Young adults living with their parents](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/datasets/youngadultslivingwiththeirparents) dataset.
 They are included here to make it easier for you to recreate our calculations and plots only; if you are interested in reusing these data for your own purposes, please refer to the Office for National Statistics website.
 The links to each of the datasets are provided above.
+These datasets have been shared under the Open Government Licence ([read the terms](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)).
 
 The raw data (**Wealth and Assets Survey** Rounds 6 and 7 and **Family Resources Survey** from 2003-2004 to 2021-2022, obtained from the UK Data Service) are not included here as that would violate the End User Licence of the UK Data Service.
 For ease of replication of the scripts using these data, users are encouraged to acquire the tab-delimited file versions from the UK Data Service and include it in their project repo.
