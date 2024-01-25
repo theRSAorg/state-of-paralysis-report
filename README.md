@@ -35,7 +35,7 @@ A complete list of the data we used, along with links and persistent identifiers
 |   |   was_exploration.R  (script using Wealth and Assets Survey data to explore questions around debt and financial liabilities for young people)
 |   |
 \---tables
-        wage_growth_2016-2023.docx ([Jolyon to fill in])
+        wage_growth_2016-2023.docx (output table comparing wages in 2016 and 2023, and the growth over the period)
 ```
 
 ### Restricted data
