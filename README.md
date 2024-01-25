@@ -23,7 +23,7 @@ A complete list of the data we used, along with links and persistent identifiers
 |   |   (figures are all created by the scripts and could in principle be deleted)
 |   |
 +---Python
-|   |   income.html (the content of the Jyputer notebook below in a format that's easy to view on an Internet browser)
+|   |   income.html (the content of the Jupyter notebook below in a format that's easy to view on an Internet browser)
 |   |   income.ipynb (Jupyter notebook using Annual Survey for Hours and Earning data to explore wages for young people)
 |   |
 +---R
