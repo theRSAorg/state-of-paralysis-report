@@ -2,7 +2,8 @@
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 # About
-This repository contains data and code to recreate figures and tables used in the RSA's report entitled [State of Paralysis: Young People's Future Health & Economic Security](https://www.thersa.org/reports/state-of-paralysis).
+This repository contains data and code to recreate figures and tables presented in the RSA's report **State of paralysis: Young people's health and economic security in the UK**.
+This work was funded by The Health Foundation.
 
 The data included in the `data` folder come from the Office for National Statistics (ONS), specifically from the [Annual Survey for Hours and Earning](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/allemployeesashetable1) and from the [Young adults living with their parents](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/datasets/youngadultslivingwiththeirparents) dataset.
 They are included here to make it easier for you to recreate our calculations and plots only; if you are interested in reusing these data for your own purposes, please refer to the Office for National Statistics website.
